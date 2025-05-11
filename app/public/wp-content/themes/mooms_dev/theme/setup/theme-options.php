@@ -15,9 +15,15 @@ use Carbon_Fields\Field\Field;
 $optionsPage = Container::make('theme_options', __('Theme Options', 'mms'))
 	->set_page_file('app-theme-options.php')
 	->add_tab(__('Branding | Thương hiệu', 'mms'), [
-		Field::make('image', 'logo' . currentLanguage(), __('Logo', 'mms'))->set_width(33.33),
-		Field::make('image', 'footer_logo' . currentLanguage(), __('Footer Logo', 'mms'))->set_width(33.33),
-		Field::make('image', 'default_image' . currentLanguage(), __('Default image | Hình ảnh mặc định', 'mms'))->set_width(33.33),
+		Field::make('image', 'logo' . currentLanguage(), __('Logo', 'mms'))
+			->set_width(33.33)
+			->set_attribute('data-id', 'logo'),
+		Field::make('image', 'footer_logo' . currentLanguage(), __('Footer Logo', 'mms'))
+			->set_width(33.33)
+			->set_attribute('data-id', 'footer_logo'),
+		Field::make('image', 'default_image' . currentLanguage(), __('Default image | Hình ảnh mặc định', 'mms'))
+			->set_width(33.33)
+			->set_attribute('data-id', 'default_image'),
 	])
 
 	->add_tab(__('Contact | Liên hệ', 'mms'), [

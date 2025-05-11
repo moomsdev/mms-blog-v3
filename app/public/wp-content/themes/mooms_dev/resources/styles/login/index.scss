@@ -5,7 +5,7 @@ html {
 }
 
 body.login {
-  font: normal normal 400 1.6rem $MontserratFont;
+  font: normal normal 400 1.6rem $secondaryFont;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -37,24 +37,23 @@ body.login {
       border-right: 3px solid #fff;
       width: 0;
       animation: typing 3.5s steps(22, end) forwards,
-        blink-caret .75s step-end infinite alternate;
+        blink-caret 0.75s step-end infinite alternate;
     }
 
     @keyframes typing {
       from {
-        width: 0
+        width: 0;
       }
 
       to {
-        width: 100%
+        width: 100%;
       }
     }
 
     @keyframes blink-caret {
-
       from,
       to {
-        border-color: transparent
+        border-color: transparent;
       }
 
       50% {

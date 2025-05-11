@@ -11,6 +11,7 @@
 
 html {
   font-size: 62.5%;
+  border: none !important;
 
   // &[lang="en-US"] {
   //   font-family: $subFont;
@@ -20,8 +21,8 @@ html {
 body {
   scroll-behavior: smooth;
   font-size: clamp(1.4rem, 2.5vw, 1.8rem) !important;
-  line-height: 1.5em !important;
-  color: $textColor;
+  line-height: 1.2em;
+  color: $secondColor;
 }
 
 ::-webkit-scrollbar {
@@ -114,10 +115,7 @@ input,
 textarea {
   vertical-align: top;
   outline: 0;
-  transition:
-    background-color 0.25s,
-    border-color 0.25s,
-    color 0.25s,
+  transition: background-color 0.25s, border-color 0.25s, color 0.25s,
     box-shadow 0.25s;
 }
 
@@ -139,17 +137,17 @@ p:empty {
   padding-right: 10rem;
   padding-left: 10rem;
 
-  @include mediaMaxWidth($lg) {
+  @include maxWidth($lg) {
     padding-right: 5rem;
     padding-left: 5rem;
   }
 
-  @include mediaMaxWidth($md) {
+  @include maxWidth($md) {
     padding-right: 2rem;
     padding-left: 2rem;
   }
 
-  @include mediaMaxWidth($sm) {
+  @include maxWidth($sm) {
     padding-right: 1.5rem;
     padding-left: 1.5rem;
   }
@@ -173,19 +171,19 @@ p:empty {
   width: 100%;
   max-width: $container-mw;
 
-  @include mediaMaxWidth($lg) {
+  @include maxWidth($lg) {
     max-width: 114rem;
   }
 
-  @include mediaMaxWidth($md) {
+  @include maxWidth($md) {
     max-width: 96rem;
   }
 
-  @include mediaMaxWidth($sm) {
+  @include maxWidth($sm) {
     max-width: 72rem;
   }
 
-  @include mediaMaxWidth($xs) {
+  @include maxWidth($xs) {
     max-width: 54rem;
   }
 }

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Theme header partial.
  *
@@ -21,49 +20,19 @@
 </head>
 
 <body <?php body_class(); ?>>
-	<?php app_shim_wp_body_open(); ?>
-	<div class="wrapper_mm">
+	<?php
+  app_shim_wp_body_open();
+
+  if (is_home() || is_front_page()) :
+    echo '<h1 class="site-name d-none">' . get_bloginfo('name') . '</h1>';
+  endif;
+  ?>
+
+	<div class="wrapper_mms">
 		<header id="header">
-			<div class="container">
-				<div class="header-inner full-width">
-					<div class="container">
-						<div class="inner">
-							<div class="logo-mb">
-								<a href="<?php bloginfo('url') ?>"
-									class="main-logo">
-									<img src="<?php theOptionImage('logo'); ?>"
-										alt="<?php bloginfo('url'); ?>">
-								</a>
-							</div>
-							<div class="both-menu">
-								<div class="main-menu">
-									<nav
-										class="pc-menu d-none d-md-block">
-										<?php
-										wp_nav_menu([
-											'menu' => 'main-menu',
-											'theme_location' => 'main-menu',
-											'container' => 'ul',
-											'menu_class' => 'nav-menu',
-											'walker' => new Bootstrap_Menu_Walker(),
-										])
-										?>
-									</nav>
-									<div class="mb-menu d-flex d-md-none">
-										<a class="__bar_menu"
-											href="#mobile_menu">
-											<button
-												class="mburger mburger--collapse">
-												<b></b>
-												<b></b>
-												<b></b>
-											</button>
-										</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+			<div class="container-fluid">
+				<figure class="header-logo">
+					<img src="<?php theOptionImage('logo'); ?>" alt="<?php bloginfo('name'); ?>" loading="lazy">
+				</img>
 			</div>
 		</header>

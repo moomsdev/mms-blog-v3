@@ -18,7 +18,7 @@ define('SUPER_USER', ['mooms.dev']);
 // =============================================================================
 
 define('AUTHOR', [
-    'name'           => 'Dev La Cà',
+    'name'           => 'La Cà Dev',
     'email'          => 'support@mooms.dev',
     'phone_number'   => '0989 64 67 66',
     'website'        => 'https://mooms.dev/',

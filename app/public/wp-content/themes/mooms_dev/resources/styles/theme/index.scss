@@ -18,16 +18,9 @@
 @use "./pages/single.scss" as *;
 
 @use "./components/section.scss";
-@use "./components/heading.scss";
-@use "./components/loop-post.scss";
-@use "./components/loop-food.scss";
-@use "./components/slider.scss";
-@use "./components/intro-block.scss";
-@use "./components/menu-block.scss";
-@use "./components/share-post.scss";
 
 @use "./_sprite.scss";
 @import "~@csstools/normalize.css";
 @import "~swiper/swiper-bundle.min.css";
-@import "~mburger-css/src/scss/mburger";
 @import "~mmenu-js/src/mmenu";
+@import "~bootstrap/dist/css/bootstrap.min.css";

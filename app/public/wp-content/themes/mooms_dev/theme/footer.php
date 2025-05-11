@@ -17,16 +17,16 @@
 <!-- container-wrapper end -->
 
 <!-- mobile menu -->
-<nav id="mobile_menu">
+<!-- <nav id="mobile_menu">
 	<?php
-	wp_nav_menu([
-		'menu' => 'main-menu',
-		'theme_location' => 'main-menu',
-		'container' => 'ul',
-		'menu_class' => '',
-	])
+	// wp_nav_menu([
+	// 	'menu' => 'main-menu',
+	// 	'theme_location' => 'main-menu',
+	// 	'container' => 'ul',
+	// 	'menu_class' => '',
+	// ])
 	?>
-</nav>
+</nav> -->
 
 <!-- ScrolltoTop -->
 <div id="totop" class="init">

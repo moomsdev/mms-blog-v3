@@ -53,7 +53,7 @@
 					How you got here is a mystery. <br>
 					But you can click the button below to go back to the homepage.
 				</p>
-				<a href="/" class="btn">HOME</a>
+				<a href="/" class="btn"><?php _e('Trang chủ', 'mms'); ?></a>
 			</div>
 		</div>
 	</div>

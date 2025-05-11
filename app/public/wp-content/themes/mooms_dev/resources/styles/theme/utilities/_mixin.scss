@@ -11,13 +11,13 @@
   }
 }
 
-@mixin mediaMinWidth($min-width) {
+@mixin minWidth($min-width) {
   @media only screen and (min-width: $min-width) {
     @content;
   }
 }
 
-@mixin mediaMaxWidth($max-width) {
+@mixin maxWidth($max-width) {
   @media only screen and (max-width: $max-width) {
     @content;
   }
@@ -26,6 +26,7 @@
 @mixin aspectRatio($ratio: 16/9) {
   height: 0;
   padding-bottom: 100% / $ratio;
+
   @supports (aspect-ratio: 16/9) {
     aspest-ratio: $ratio;
     height: initial;
@@ -50,12 +51,15 @@
   font-weight: 900;
 }
 
-@mixin limitLine($number) {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: $number;
-  overflow: hidden;
-  text-overflow: ellipsis;
+@mixin limitLine($lines) {
+  & {
+    display: -webkit-box;
+    line-clamp: $lines;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
 }
 
 @mixin breakText {
@@ -79,33 +83,33 @@
   }
 }
 
-@mixin responsive-font($min-size, $max-size, $important: false) {
+@mixin resFont($min-size, $max-size, $important: false) {
   $font-size: #{$max-size}rem;
-
-  @if $important {
-    $font-size: #{$max-size}rem !important;
+  & {
+    font-size: $font-size;
+    @if $important {
+      font-size: #{$max-size}rem !important;
+    }
   }
 
-  font-size: $font-size;
-
-  @include mediaMaxWidth($lg) {
+  @include maxWidth($lg) {
     $font-size: calc(#{$max-size}rem - ((#{$max-size}rem - #{$min-size}rem)) / 2);
-
-    @if $important {
-      $font-size: calc(#{$max-size}rem - ((#{$max-size}rem - #{$min-size}rem)) / 2) !important;
+    & {
+      font-size: $font-size;
+      @if $important {
+        font-size: calc(#{$max-size}rem - ((#{$max-size}rem - #{$min-size}rem)) / 2) !important;
+      }
     }
-
-    font-size: $font-size;
   }
 
-  @include mediaMaxWidth($sm) {
+  @include maxWidth($sm) {
     $font-size: #{$min-size}rem;
-
-    @if $important {
-      $font-size: #{$min-size}rem !important;
+    & {
+      font-size: $font-size;
+      @if $important {
+        font-size: #{$min-size}rem !important;
+      }
     }
-
-    font-size: $font-size;
   }
 }
 
