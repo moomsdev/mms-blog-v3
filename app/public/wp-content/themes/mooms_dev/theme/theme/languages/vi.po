@@ -1,0 +1,161 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: MOOMS.DEV\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-08-27 08:19+0000\n"
+"PO-Revision-Date: 2024-09-25 09:09+0000\n"
+"Last-Translator: \n"
+"Language-Team: Vietnamese\n"
+"Language: vi\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.6.11; wp-6.6.1\n"
+"X-Domain: mms"
+
+#: search.php:21
+#, php-format
+msgid "%s"
+msgstr ""
+
+#: setup/blocks/intro-block.php:11
+msgid "BLOCK INTRO"
+msgstr ""
+
+#: setup/blocks/intro-block.php:9
+msgid "Block Intro"
+msgstr ""
+
+#: setup/blocks/media-block.php:7
+msgid "BLOCK MEDIA"
+msgstr ""
+
+#: setup/blocks/media-block.php:5
+msgid "Block Media"
+msgstr ""
+
+#: setup/blocks/service-block.php:11
+msgid "BLOCK SERVICE"
+msgstr ""
+
+#: setup/blocks/service-block.php:9
+msgid "Block Service"
+msgstr ""
+
+#: setup/theme-options.php:18
+msgid "Branding | Thương hiệu"
+msgstr ""
+
+#: setup/users/auth.php:190
+msgid "Chúc mừng bạn đã đăng nhập thành công"
+msgstr ""
+
+#: header.php:62
+msgid "Contact"
+msgstr ""
+
+#: setup/theme-options.php:22
+msgid "Contact | Liên hệ"
+msgstr ""
+
+#: setup/theme-options.php:20
+msgid "Default image | Hình ảnh mặc định"
+msgstr ""
+
+#: setup/sidebars.php:31
+msgid "Default Sidebar"
+msgstr ""
+
+#: setup/blocks/intro-block.php:53 setup/blocks/media-block.php:18
+msgid "Image"
+msgstr ""
+
+#: search.php:36
+msgid "Không có bài viết liên quan tới từ khóa tìm kiếm"
+msgstr ""
+
+#: search.php:24
+msgid "kết quả cho từ khóa"
+msgstr ""
+
+#: setup/theme-options.php:19
+msgid "Logo"
+msgstr ""
+
+#. Name of the theme
+msgid "mooms_dev/theme"
+msgstr ""
+
+#: setup/blocks/intro-block.php:16 setup/blocks/service-block.php:16
+msgid "REVERSED"
+msgstr ""
+
+#: setup/theme-options.php:42
+msgid "Scripts"
+msgstr ""
+
+#: setup/blocks/intro-block.php:67
+msgid "Select slider image (Ctrl + image to select multiple images))"
+msgstr ""
+
+#: setup/theme-options.php:16
+msgid "Theme Options"
+msgstr ""
+
+#: setup/users/auth.php:14 setup/users/auth.php:59
+msgid "Token mismatch!"
+msgstr ""
+
+#: setup/blocks/media-block.php:9
+msgid "Type media"
+msgstr ""
+
+#: setup/blocks/media-block.php:27
+msgid "Type video"
+msgstr ""
+
+#: setup/users/auth.php:18
+msgid "Tài khoản hoặc mật khẩu không đúng, vui lòng kiểm tra lại"
+msgstr ""
+
+#: setup/blocks/media-block.php:50
+msgid "Video from URL"
+msgstr ""
+
+#: setup/blocks/media-block.php:41
+msgid "Video upload"
+msgstr ""
+
+#: setup/blocks/intro-block.php:129 setup/blocks/service-block.php:102
+msgid "View More"
+msgstr ""
+
+#: setup/users/auth.php:79
+msgid "Vui lòng kiểm tra lại mật khẩu"
+msgstr ""
+
+#: setup/users/auth.php:71
+msgid "Vui lòng nhập email"
+msgstr ""
+
+#: setup/users/auth.php:63
+msgid "Vui lòng nhập họ"
+msgstr ""
+
+#: setup/users/auth.php:75
+msgid "Vui lòng nhập mật khẩu"
+msgstr ""
+
+#: setup/users/auth.php:67
+msgid "Vui lòng nhập tên"
+msgstr ""
+
+#: setup/blocks/media-block.php:59
+msgid "Welcome text"
+msgstr ""
+
+#: setup/users/auth.php:31 setup/users/auth.php:189
+msgid "Xin chào, "
+msgstr ""

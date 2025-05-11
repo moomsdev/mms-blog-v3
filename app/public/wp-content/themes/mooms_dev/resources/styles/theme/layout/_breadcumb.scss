@@ -1,0 +1,38 @@
+@use "../utilities/variables.scss" as *;
+@use "../utilities/mixin.scss" as *;
+
+.breadcumb {
+    display: block;
+    background: #191919;
+    padding: 0;
+    height: 460px;
+    background-size: cover;
+    position: relative;
+
+    .container,
+    .main,
+    .bread {
+        height: 100%;
+    }
+
+    .bread {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+
+        a {
+            color: #fff;
+        }
+
+        .bread-title {
+            padding: 2rem 0;
+            font-family: $MontserratFont;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: clamp(2.5rem, 3vw, 3.7rem);
+            letter-spacing: 2px;
+        }
+    }
+}

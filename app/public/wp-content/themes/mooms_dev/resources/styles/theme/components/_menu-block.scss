@@ -1,0 +1,100 @@
+@use "../utilities/variables.scss" as *;
+@use "../utilities/mixin.scss" as *;
+
+.menu-block {
+    .menu-list {
+        margin: 2rem auto;
+        place-items: center;
+
+        ul {
+            display: flex;
+            list-style: none;
+            place-items: center;
+            flex-wrap: wrap;
+            gap: 1rem 3rem;
+
+            li {
+                min-width: max-content;
+                font-family: "Latin";
+                font-size: clamp(1.6rem, 2.5vw, 2rem);
+                letter-spacing: 1px;
+                cursor: pointer;
+
+                &.active {
+                    position: relative;
+
+                    &::after {
+                        content: "";
+                        position: absolute;
+                        bottom: -5px;
+                        left: 0;
+                        width: 100%;
+                        height: 5px;
+                        background: $subTextColor;
+                    }
+                }
+            }
+        }
+    }
+
+    .menu-items {
+        padding: 3rem 0;
+        position: relative;
+        height: auto;
+        background-position: center;
+        background-repeat: repeat;
+        background-image: url("~@images/img/bgfoodicon.png");
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(67, 67, 67, .9);
+        }
+    }
+
+    .menu-wrapper {
+        align-items: stretch;
+    }
+}
+
+.specials-menu {
+    padding: 0;
+    padding-bottom: clamp(5rem, 5vw, 7rem);
+    position: relative;
+    height: auto;
+    background-position: center;
+    background-repeat: repeat;
+    background-image: url("~@images/img/bgfoodicon.png");
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(67, 67, 67, .9);
+    }
+
+    h2.block-title {
+        margin-top: clamp(3rem, 5vw, 4rem);
+        margin-bottom: clamp(2rem, 2.5vw, 4rem);
+        color: #fff;
+    }
+
+    .menu-wrapper-2 {
+        z-index: 9;
+        position: relative;
+    }
+}
+
+.post-type-archive-menu {
+    .menu-block {
+        padding-top: clamp(8rem, 10vw, 10rem);
+        padding-bottom: 0;
+    }
+}

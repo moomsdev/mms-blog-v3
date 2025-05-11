@@ -1,0 +1,38 @@
+// @import "../theme/utilities/_variables.scss";
+// @import "../theme/utilities/_mixin.scss";
+// @import "../theme/blocks/**.scss";
+// @import "../theme/layout/_general.scss";
+// @import "../shared/introjs.css";
+
+html :where(.wp-block) {
+    max-width: 120rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.featured_image.column-featured_image {
+    a {
+        display: block;
+    }
+    img {
+        width: 100%;
+        aspect-ratio: 16 / 10;
+        object-fit: cover;
+    }
+    .no-image-text {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        border: 1px dashed;
+        aspect-ratio: 16 / 10;
+    }
+}
+
+.banner-block {
+    height: auto !important;
+}
+
+.subsubsub {
+    z-index: 9999;
+    position: relative;
+}
