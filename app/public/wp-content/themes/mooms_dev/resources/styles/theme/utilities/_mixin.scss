@@ -1,3 +1,5 @@
+@use "../utilities/variables.scss" as *;
+
 /// Block Element
 @mixin element($element) {
   &__#{$element} {
@@ -8,6 +10,36 @@
 @mixin modifier($modifier) {
   &--#{$modifier} {
       @content;
+  }
+}
+
+@mixin resFont($min-size, $max-size, $important: false) {
+  $font-size: #{$max-size}rem;
+  & {
+    font-size: $font-size;
+    @if $important {
+      font-size: #{$max-size}rem !important;
+    }
+  }
+
+  @include maxWidth($lg) {
+    $font-size: calc(#{$max-size}rem - ((#{$max-size}rem - #{$min-size}rem)) / 2);
+    & {
+      font-size: $font-size;
+      @if $important {
+        font-size: calc(#{$max-size}rem - ((#{$max-size}rem - #{$min-size}rem)) / 2) !important;
+      }
+    }
+  }
+
+  @include maxWidth($sm) {
+    $font-size: #{$min-size}rem;
+    & {
+      font-size: $font-size;
+      @if $important {
+        font-size: #{$min-size}rem !important;
+      }
+    }
   }
 }
 
@@ -83,35 +115,7 @@
   }
 }
 
-@mixin resFont($min-size, $max-size, $important: false) {
-  $font-size: #{$max-size}rem;
-  & {
-    font-size: $font-size;
-    @if $important {
-      font-size: #{$max-size}rem !important;
-    }
-  }
 
-  @include maxWidth($lg) {
-    $font-size: calc(#{$max-size}rem - ((#{$max-size}rem - #{$min-size}rem)) / 2);
-    & {
-      font-size: $font-size;
-      @if $important {
-        font-size: calc(#{$max-size}rem - ((#{$max-size}rem - #{$min-size}rem)) / 2) !important;
-      }
-    }
-  }
-
-  @include maxWidth($sm) {
-    $font-size: #{$min-size}rem;
-    & {
-      font-size: $font-size;
-      @if $important {
-        font-size: #{$min-size}rem !important;
-      }
-    }
-  }
-}
 
 @mixin iconify($icon, $w, $h: auto) {
   height: $h;

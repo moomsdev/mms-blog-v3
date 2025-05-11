@@ -16,16 +16,16 @@ use Carbon_Fields\Container;
 use Carbon_Fields\Field;
 
 register_nav_menus(
-	[
-		'main-menu' => __( 'Main Menu', 'app' ),
-        'footer-menu' => __( 'Footer Menu', 'app' ),
+[
+		'main-menu' => __( 'Main Menu', 'mms' ),
+    'footer-menu' => __( 'Footer Menu', 'mms' ),
 	]
 );
 
 /**
  * Create custom menu metaz
  */
-// Container::make('nav_menu_item', __('Cài dặt mở rộng'))
-//          ->add_fields([
-//              Field::make('icon', 'menu_icon', __('Menu icon', 'mms')),
-//          ]);
+Container::make('nav_menu_item', __('Cài dặt mở rộng'))
+  ->add_fields([
+      Field::make('image', 'menu_img', __('Menu image', 'mms')),
+  ]);

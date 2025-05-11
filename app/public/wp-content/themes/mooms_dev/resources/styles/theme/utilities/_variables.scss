@@ -1,9 +1,21 @@
+:root {
+  --primary-color: #010101;
+  --secondary-color: #626262;
+  --background-color: hsla(230, 80%, 98%, 1);
+}
+
+html[data-theme="dark"] {
+  --primary-color: #fff;
+  --secondary-color: #fff;
+  --background-color: hsla(230, 55%, 4%, 1);
+}
+
 $primaryFont: "Be Vietnam Pro", sans-serif;
-$secondaryFont: "Poppins", sans-serif;
+$secondaryFont: "Quicksand", sans-serif;
 
-$primaryColor: #010101;
-$secondColor: #626262;
-
+$primaryColor: var(--primary-color);
+$secondaryColor: var(--secondary-color);
+$backgroundColor: var(--background-color);
 
 $thin: 100;
 $extraLight: 200;

@@ -9,8 +9,10 @@
 function getImageAsset($path) {
     $my_theme   = wp_get_theme();
     $theme_name = str_replace('/theme', '', $my_theme->get_stylesheet());
+    $theme_path = str_replace('wp-content/themes/'. $theme_name .'/theme', 'wp-content/themes/' . $theme_name . '/', $my_theme->get_template_directory_uri());
+
     if (carbon_get_theme_option('use_short_url') !== true) {
-        $siteUrl = get_template_directory_uri() . "/resources/images/";
+        $siteUrl = $theme_path . "/resources/images/";
     } else {
         $siteUrl = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/img/";
     }
@@ -259,14 +261,21 @@ function thePageTitle() {
 }
 
 function theLanguageSwitcher($showName = true, $showFlag = false) {
-    if (function_exists('pll_the_languages')) {
-        echo '<ul class="language-switcher">';
-        pll_the_languages([
-            'show_names'    => $showName,
-            'show_flags'    => $showFlag,
-            'hide_if_empty' => false,
-            'hide_current'  => true,
-        ]);
-        echo '</ul>';
-    }
+  if (function_exists('pll_the_languages')) {
+      $languages = pll_the_languages([
+          'show_names'    => $showName,
+          'show_flags'    => $showFlag,
+          'hide_if_empty' => false,
+          'hide_current'  => true,
+          'raw'           => true,
+      ]);
+
+      echo '<ul class="language-switcher">';
+      foreach ($languages as $lang) {
+          $icon_html = '<span class="iconify" data-icon="ant-design:global-outlined"></span>';
+          echo '<li><a href="'. esc_url($lang['url']) .'" hreflang="'. esc_attr($lang['slug']) .'">' . $icon_html . ' ' . esc_html($lang['name']) . '</a></li>';
+      }
+      echo '</ul>';
+  }
 }
+

@@ -11,18 +11,19 @@
 
 html {
   font-size: 62.5%;
+  color-scheme: light;
   border: none !important;
-
-  // &[lang="en-US"] {
-  //   font-family: $subFont;
-  // }
 }
 
 body {
+  font-family: $primaryFont !important;
+  font-weight: $light !important;
+  line-height: 1.2em !important;
+  color: $primaryColor !important;
+  background-color: $backgroundColor !important;
+  transition: background-color 0.3s ease, color 0.3s ease;
   scroll-behavior: smooth;
-  font-size: clamp(1.4rem, 2.5vw, 1.8rem) !important;
-  line-height: 1.2em;
-  color: $secondColor;
+  @include resFont(1.4, 1.8, true);
 }
 
 ::-webkit-scrollbar {
@@ -40,6 +41,97 @@ body {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
   background: rgba(0, 0, 0, 0.5);
 }
+
+// animation for dark mode transition
+.toggle-darkmode {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translateX(-50%) scale(0.5);
+  cursor: pointer;
+  z-index: 10;
+  
+  input {
+    display: none;
+    
+    & + div {
+      border-radius: 50%;
+      width: 5rem;
+      height: 5rem;
+      position: relative;
+      box-shadow: inset 1.6rem -1.6rem 0 0 $primaryColor;
+      transform: scale(1) rotate(-2deg);
+      transition: box-shadow 0.5s ease 0s, transform 0.4s ease 0.1s;
+      
+      &:before {
+        content: "";
+        width: inherit;
+        height: inherit;
+        border-radius: inherit;
+        position: absolute;
+        left: 0;
+        top: 0;
+        background: light-dark(transparent, $primaryColor);
+        transition: background 0.3s ease;
+      }
+      
+      &:after {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin: -4px 0 0 -4px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        box-shadow: 0 -3rem 0 $primaryColor, 
+                    0 3rem 0 $primaryColor,
+                    3rem 0 0 $primaryColor, 
+                    -3rem 0 0 $primaryColor,
+                    2rem 2rem 0 $primaryColor, 
+                    -2rem 2rem 0 $primaryColor,
+                    2rem -2rem 0 $primaryColor, 
+                    -2rem -2rem 0 $primaryColor;
+        transform: scale(0);
+        transition: all 0.3s ease;
+      }
+    }
+    
+    &:checked + div {
+      box-shadow: inset 3.2rem -3.2rem 0 0 #fff;
+      transform: scale(0.5) rotate(0deg);
+      transition: transform 0.3s ease 0.1s, box-shadow 0.2s ease 0s;
+      
+      &:before {
+        background: $primaryColor;
+        transition: background 0.3s ease 0.1s;
+      }
+      
+      &:after {
+        transform: scale(1.5);
+        transition: transform 0.5s ease 0.15s;
+      }
+    }
+  }
+}
+
+::view-transition-new(html) {
+  animation: all 1.9s ease-in-out forwards;
+  z-index: 1;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(html) {
+  animation: all 1.9s ease-in-out forwards;
+  animation-delay: 1.9s;
+  z-index: 0;
+  mix-blend-mode: normal;
+}
+
+::view-transition-image-pair(html) {
+  isolation: isolate;
+}
+// end of dark mode transition
 
 h1::selection,
 h2::selection,
@@ -130,7 +222,9 @@ p:empty {
 }
 
 .container {
-  max-width: $container-mw;
+  @include minWidth($xl) {
+    max-width: $container-mw !important;
+  }
 }
 
 .container-fluid {
@@ -163,35 +257,12 @@ p:empty {
   margin-right: -50vw;
 }
 
-.mm-container {
-  margin-right: auto;
-  margin-left: auto;
-  padding-right: 1.5rem;
-  padding-left: 1.5rem;
-  width: 100%;
-  max-width: $container-mw;
+.no-gap-row {
+  margin-right: 0;
+  margin-left: 0;
 
-  @include maxWidth($lg) {
-    max-width: 114rem;
+  > [class*='col-'] {
+    padding-right: 0;
+    padding-left: 0;
   }
-
-  @include maxWidth($md) {
-    max-width: 96rem;
-  }
-
-  @include maxWidth($sm) {
-    max-width: 72rem;
-  }
-
-  @include maxWidth($xs) {
-    max-width: 54rem;
-  }
-}
-
-.mm-container-fluid {
-  margin-right: auto;
-  margin-left: auto;
-  padding-right: 1.5rem;
-  padding-left: 1.5rem;
-  width: 100%;
 }
