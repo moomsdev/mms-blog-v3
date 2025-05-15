@@ -12,6 +12,31 @@ if (!defined('ABSPATH')) {
 class MMS_Menu_Walker extends Walker_Nav_Menu
 {
     /**
+     * Starts the list before the elements are added.
+     *
+     * @param string   $output Used to append additional content (passed by reference).
+     * @param int      $depth  Depth of menu item. Used for padding.
+     * @param stdClass $args   An object of wp_nav_menu() arguments.
+     */
+    /**
+     * Custom method to add a button before the menu
+     * This will be called from the walker_nav_menu_start_el filter
+     *
+     * @param string   $output The menu HTML output
+     * @param array    $args   Menu arguments
+     * @return string Modified menu HTML
+     */
+    public static function add_menu_button($output, $args)
+    {
+        if (is_object($args) && isset($args->menu_class) && $args->menu_class === 'main-menu' && !isset($args->button_added)) {
+            // Set a flag to prevent adding the button multiple times
+            $args->button_added = true;
+            return '<button class="act-menu">menu</button>' . $output;
+        }
+        return $output;
+    }
+
+    /**
      * {@inheritdoc}
      */
     function start_lvl(&$output, $depth = 0, $args = [])

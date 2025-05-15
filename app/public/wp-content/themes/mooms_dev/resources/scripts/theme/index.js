@@ -20,7 +20,7 @@ jQuery(document).ready(function () {
 });
 
 function initializePageFeatures() {
-  // initMmenu();
+  initMenu();
   // initIsotop();
   setupGsap404();
   // initSwiperSlider();
@@ -31,7 +31,7 @@ function initializePageFeatures() {
 }
 
 function initToggleDarkMode() {
-  const toggleInput = document.querySelector(".toggle-darkmode input");
+  const toggleInput = document.querySelector(".darkmode-icon input");
   const rootElement = document.documentElement;
   const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
@@ -71,6 +71,23 @@ function initToggleDarkMode() {
       }
     }
   });
+}
+
+function initMenu() {
+  var $menuBtn = document.getElementById('btn-hamburger');
+  const navMenu = document.querySelector("nav.nav-menu");
+
+  $menuBtn.onclick = function(e) {
+    navMenu.classList.toggle("actived");
+    document.body.classList.toggle("overflow-hidden");
+
+    animatedMenu(this);    
+    e.preventDefault();
+  };
+}
+
+function animatedMenu(x) {
+  x.classList.toggle("animeOpenClose");
 }
 
 function initMmenu() {
@@ -203,6 +220,3 @@ function animateText(selector) {
               );
             });
 }
-
-// Call the function with your selector
-

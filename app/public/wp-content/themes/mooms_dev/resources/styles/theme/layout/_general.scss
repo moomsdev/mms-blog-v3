@@ -43,11 +43,36 @@ body {
 }
 
 // animation for dark mode transition
-.toggle-darkmode {
+#darkmode {
   position: fixed;
   top: 2rem;
-  right: 0;
-  transform: translateX(-50%) scale(0.5);
+  right: 3rem;
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2em;
+  z-index: 2;
+  border: none;
+  
+  .btn-outline {
+    position: absolute;
+    width: 5rem;
+    height: 5rem;
+    border: 1px solid $primaryColor;
+  }
+  .btn-outline-1 {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    animation: morph 4s linear infinite;
+  }
+  .btn-outline-2 {
+    border-radius: 53% 47% 43% 58% / 51% 39% 61% 49%;
+  }
+}
+
+.darkmode-icon {
+  transform: scale(0.45);
   cursor: pointer;
   z-index: 10;
 
@@ -59,7 +84,7 @@ body {
       width: 5rem;
       height: 5rem;
       position: relative;
-      box-shadow: inset 1.6rem -1.6rem 0 0 $primaryColor;
+      box-shadow: inset 1.3rem -1.3rem 0 0 $primaryColor;
       transform: scale(1) rotate(-2deg);
       transition: box-shadow 0.5s ease 0s, transform 0.4s ease 0.1s;
 
@@ -105,11 +130,13 @@ body {
       &:before {
         background: $primaryColor;
         transition: background 0.3s ease 0.1s;
+        outline: none;
       }
 
       &:after {
         transform: scale(1.5);
         transition: transform 0.5s ease 0.15s;
+        outline: none;
       }
     }
   }

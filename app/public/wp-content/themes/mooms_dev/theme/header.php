@@ -48,23 +48,18 @@
 	?>
 
 	<!-- dark mode -->
-	<label class="toggle-darkmode">
-		<input type="checkbox" />
-		<div></div>
-	</label>
+	<div id="darkmode" class="btn">
+		<div class="btn-outline btn-outline-1"></div>
+		<div class="btn-outline btn-outline-2"></div>
+		<label class="darkmode-icon">
+			<input type="checkbox" />
+			<div></div>
+		</label>
+	</div>
 
 	<div class="wrapper_mms" id="swup">
 		<header id="header">
 			<div class="container">
-				<!-- toggle btn -->
-				<!-- <div id="toggle-btn" class="btn">
-					<div class="btn-outline btn-outline-1"></div>
-					<div class="btn-outline btn-outline-2"></div>
-					<div id="hamburger">
-						<span class="line line-1"></span>
-						<span class="line line-2"></span>
-					</div>
-				</div> -->
 				<!-- slogan -->
 				<div class="slogan">
 					<?php
@@ -75,34 +70,36 @@
 
 				<div class="head-menu d-flex align-items-center justify-content-between">
 					<!-- logo -->
-					<!-- <figure class="header-logo">
-						<img class="light" src="<?php //theOptionImage('logo'); ?>" alt="<?php bloginfo('name'); ?>" loading="lazy">
-						<img class="dark" src="<?php //theOptionImage('logo_dark'); ?>" alt="<?php bloginfo('name'); ?>" loading="lazy">
-					</figure> -->
 					<div class="logo-menu d-flex align-items-center">
 						<span class="circle"></span>
 						<?php
-						wp_nav_menu([
-							'theme_location' => 'main-menu',
-							'menu_class'     => 'main-menu',
-							'container'      => 'nav',
-							'container_class' => 'nav-menu',
-							'walker'         => new MMS_Menu_Walker(),
-						]);
+						echo '<nav class="nav-menu">	<button id="btn-hamburger">
+								<div class="line-1"></div>
+								<div class="line-2"></div>
+								<div class="line-3"></div>
+							</button></button>';
+						
+							wp_nav_menu([
+								'theme_location' => 'main-menu',
+								'menu_class'     => 'main-menu',
+								'container'      => false,
+								'walker'         => new MMS_Menu_Walker(),
+							]);
+						echo '</nav>';
 						?>
 					</div>
 
-					<!-- multi language -->
-					<?php theLanguageSwitcher(); ?>
-
-					<!-- search -->
-					<!-- <div class="search-icon">
-						<button class="search-icon__btn">
-							<span class="iconify" data-icon="lucide:search-code"></span>
-						</button>
-					</div> -->
+					<div class="language-search d-flex align-items-center gap-4">
+						<!-- search -->
+						<div class="search-icon">
+							<button class="search-icon__btn">
+								<span class="iconify" data-icon="lucide:search-code"></span>
+							</button>
+						</div>
+						<!-- multi language -->
+						<?php theLanguageSwitcher(); ?>
+					</div>
 				</div>
-
-
+				<!-- end head-menu -->
 			</div>
 		</header>
