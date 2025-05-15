@@ -45,15 +45,15 @@ body {
 // animation for dark mode transition
 .toggle-darkmode {
   position: fixed;
-  top: 50%;
+  top: 2rem;
   right: 0;
   transform: translateX(-50%) scale(0.5);
   cursor: pointer;
   z-index: 10;
-  
+
   input {
     display: none;
-    
+
     & + div {
       border-radius: 50%;
       width: 5rem;
@@ -62,7 +62,7 @@ body {
       box-shadow: inset 1.6rem -1.6rem 0 0 $primaryColor;
       transform: scale(1) rotate(-2deg);
       transition: box-shadow 0.5s ease 0s, transform 0.4s ease 0.1s;
-      
+
       &:before {
         content: "";
         width: inherit;
@@ -74,7 +74,7 @@ body {
         background: light-dark(transparent, $primaryColor);
         transition: background 0.3s ease;
       }
-      
+
       &:after {
         content: "";
         width: 8px;
@@ -84,29 +84,29 @@ body {
         position: absolute;
         top: 50%;
         left: 50%;
-        box-shadow: 0 -3rem 0 $primaryColor, 
+        box-shadow: 0 -3rem 0 $primaryColor,
                     0 3rem 0 $primaryColor,
-                    3rem 0 0 $primaryColor, 
+                    3rem 0 0 $primaryColor,
                     -3rem 0 0 $primaryColor,
-                    2rem 2rem 0 $primaryColor, 
+                    2rem 2rem 0 $primaryColor,
                     -2rem 2rem 0 $primaryColor,
-                    2rem -2rem 0 $primaryColor, 
+                    2rem -2rem 0 $primaryColor,
                     -2rem -2rem 0 $primaryColor;
         transform: scale(0);
         transition: all 0.3s ease;
       }
     }
-    
+
     &:checked + div {
       box-shadow: inset 3.2rem -3.2rem 0 0 #fff;
       transform: scale(0.5) rotate(0deg);
       transition: transform 0.3s ease 0.1s, box-shadow 0.2s ease 0s;
-      
+
       &:before {
         background: $primaryColor;
         transition: background 0.3s ease 0.1s;
       }
-      
+
       &:after {
         transform: scale(1.5);
         transition: transform 0.5s ease 0.15s;

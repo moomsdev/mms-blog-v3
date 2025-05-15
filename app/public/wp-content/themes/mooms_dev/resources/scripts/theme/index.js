@@ -4,12 +4,6 @@ import "airbnb-browser-shims";
 import "./pages/*.js";
 import 'popper.js';
 import 'bootstrap/dist/js/bootstrap.bundle';
-import 'bootstrap/scss/bootstrap.scss';
-// import "./vendor/imagesloaded.pkgd.min";
-// import "./vendor/jquery.isotope.v3.0.2";
-// import "./vendor/venobox.min";
-// import Mmenu from "mmenu-js/src/mmenu";
-
 import { gsap } from 'gsap';
 import { SplitText } from 'gsap/SplitText';
 
@@ -54,7 +48,7 @@ function initToggleDarkMode() {
     toggleInput.addEventListener("change", (event) => {
       const isDark = event.target.checked;
       const newTheme = isDark ? 'dark' : 'light';
-      
+
       if (document.startViewTransition) {
         document.startViewTransition(() => {
           rootElement.setAttribute('data-theme', newTheme);
