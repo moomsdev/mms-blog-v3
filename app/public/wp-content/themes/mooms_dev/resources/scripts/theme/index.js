@@ -3,7 +3,7 @@ import "@styles/theme";
 import "airbnb-browser-shims";
 import "./pages/*.js";
 import 'popper.js';
-import 'bootstrap/dist/js/bootstrap.bundle';
+import './vendor/bootstrap.js';
 import { gsap } from 'gsap';
 import { SplitText } from 'gsap/SplitText';
 

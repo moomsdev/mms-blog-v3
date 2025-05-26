@@ -7,6 +7,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const ImageminPlugin = require('imagemin-webpack-plugin').default;
 const ManifestPlugin = require('webpack-manifest-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 /**
  * Internal dependencies.
@@ -49,9 +50,10 @@ const plugins = [
     new CleanWebpackPlugin(utils.distPath(), {
         root: utils.themeRootPath()
     }),
-    new WatchIgnorePlugin({
-        paths: [/node_modules/, /dist/]
-    }),
+    new WatchIgnorePlugin([
+        /node_modules/,
+        /dist/
+    ]),
     new ProvidePlugin({
         $: 'jquery',
         jQuery: 'jquery'
@@ -68,7 +70,12 @@ const plugins = [
             })
         ]
     }),
-    new ManifestPlugin()
+    new ManifestPlugin(),
+    new BundleAnalyzerPlugin({
+        analyzerMode: 'static',
+        reportFilename: 'bundle-report.html',
+        openAnalyzer: true
+    })
 ];
 
 module.exports = {
