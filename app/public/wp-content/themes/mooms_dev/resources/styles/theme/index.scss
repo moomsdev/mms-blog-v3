@@ -1,25 +1,21 @@
 @use "./utilities/variables.scss" as *;
 @use "./utilities/mixin.scss" as *;
-
 @use "~@styles/shared/config.scss";
 @use "~@styles/shared/variables.scss";
 @use "~@styles/shared/editor.scss";
-
 @use "./base/generic.fonts.scss" as *;
 @use "./base/generic.wordpress.scss" as *;
-
 @use "./layout/general.scss" as *;
 @use "./layout/header.scss" as *;
 @use "./layout/footer.scss" as *;
 @use "./layout/breadcumb.scss" as *;
-
 @use "./pages/404.scss" as *;
 @use "./pages/contact.scss" as *;
 @use "./pages/single.scss" as *;
-
 @use "./components/section.scss";
-
 @use "./_sprite.scss";
+
+
 @import "~@csstools/normalize.css";
+@import "~bootstrap/dist/css/bootstrap.min.css";
 @import "~swiper/swiper-bundle.min.css";
-@import "./bootstrap";
