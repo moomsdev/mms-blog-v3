@@ -1,0 +1,133 @@
+name: Build and Test Theme
+
+on:
+    push:
+        branches: [master, develop]
+        paths:
+            - 'app/public/wp-content/themes/mooms_dev/**'
+    pull_request:
+        branches: [master]
+        paths:
+            - 'app/public/wp-content/themes/mooms_dev/**'
+
+jobs:
+    build-test:
+        name: Build and Test Theme Assets
+        runs-on: ubuntu-latest
+
+        strategy:
+            matrix:
+                node-version: [18, 20]
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: 'yarn'
+                  cache-dependency-path: app/public/wp-content/themes/mooms_dev/yarn.lock
+
+            - name: Install dependencies
+              working-directory: app/public/wp-content/themes/mooms_dev
+              run: yarn install --frozen-lockfile
+
+            - name: Run development build
+              working-directory: app/public/wp-content/themes/mooms_dev
+              run: yarn dev
+
+            - name: Run production build
+              working-directory: app/public/wp-content/themes/mooms_dev
+              run: yarn build
+
+            - name: Check build artifacts
+              working-directory: app/public/wp-content/themes/mooms_dev
+              run: |
+                  if [ ! -d "dist" ]; then
+                    echo "❌ Build failed - dist directory not found"
+                    exit 1
+                  fi
+                  echo "✅ Build successful - dist directory exists"
+                  ls -la dist/
+
+            - name: Upload build artifacts
+              uses: actions/upload-artifact@v4
+              if: matrix.node-version == 18
+              with:
+                  name: theme-build-artifacts
+                  path: app/public/wp-content/themes/mooms_dev/dist/
+                  retention-days: 7
+
+    php-compatibility:
+        name: PHP Compatibility Check
+        runs-on: ubuntu-latest
+
+        strategy:
+            matrix:
+                php-version: [7.4, 8.0, 8.1, 8.2]
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup PHP ${{ matrix.php-version }}
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php-version }}
+                  extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
+                  coverage: none
+
+            - name: Cache Composer dependencies
+              uses: actions/cache@v3
+              with:
+                  path: app/public/wp-content/themes/mooms_dev/vendor
+                  key: composer-${{ matrix.php-version }}-${{ hashFiles('app/public/wp-content/themes/mooms_dev/composer.lock') }}
+                  restore-keys: composer-${{ matrix.php-version }}-
+
+            - name: Install Composer dependencies
+              working-directory: app/public/wp-content/themes/mooms_dev
+              run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
+
+            - name: Check PHP syntax
+              working-directory: app/public/wp-content/themes/mooms_dev
+              run: |
+                  find . -name "*.php" -not -path "./vendor/*" -not -path "./node_modules/*" -print0 | xargs -0 -I {} php -l {}
+
+    security-check:
+        name: Security Vulnerability Check
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.1'
+                  coverage: none
+
+            - name: Install Composer dependencies
+              working-directory: app/public/wp-content/themes/mooms_dev
+              run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
+
+            - name: Check for security vulnerabilities
+              working-directory: app/public/wp-content/themes/mooms_dev
+              run: composer audit
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '18'
+                  cache: 'yarn'
+                  cache-dependency-path: app/public/wp-content/themes/mooms_dev/yarn.lock
+
+            - name: Install Node dependencies
+              working-directory: app/public/wp-content/themes/mooms_dev
+              run: yarn install --frozen-lockfile
+
+            - name: Check for npm vulnerabilities
+              working-directory: app/public/wp-content/themes/mooms_dev
+              run: yarn audit --level moderate
