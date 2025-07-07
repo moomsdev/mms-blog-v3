@@ -7,9 +7,16 @@
 	<exclude-pattern>dist/*</exclude-pattern>
 	<exclude-pattern>node_modules/*</exclude-pattern>
 	<exclude-pattern>vendor/*</exclude-pattern>
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>vendor</exclude-pattern>
 	<exclude-pattern>wpcs/*</exclude-pattern>
+	<exclude-pattern>resources/vendor/*</exclude-pattern>
 	<exclude-pattern>*/*.css</exclude-pattern>
 	<exclude-pattern>*/*.js</exclude-pattern>
+	<exclude-pattern>*.css</exclude-pattern>
+	<exclude-pattern>*.js</exclude-pattern>
+	<exclude-pattern>composer.lock</exclude-pattern>
+	<exclude-pattern>yarn.lock</exclude-pattern>
 
 	<rule ref="WordPress">
 		<exclude name="Generic.Files.LineEndings.InvalidEOLChar" />

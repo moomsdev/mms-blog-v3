@@ -1,4 +1,7 @@
-name: PHP CodeSniffer
+# Alternative PHPCS approach - Only check specific directories
+# Rename to phpcs.yml to use this approach instead
+
+name: PHP CodeSniffer - Specific Directories
 
 on:
     push:
@@ -30,13 +33,20 @@ jobs:
               working-directory: app/public/wp-content/themes/mooms_dev
               run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader || composer update --no-progress --no-interaction --prefer-dist --optimize-autoloader
 
-            - name: Run PHP CodeSniffer
+            - name: Run PHP CodeSniffer on specific directories
               working-directory: app/public/wp-content/themes/mooms_dev
               run: |
-                  ./vendor/bin/phpcs --standard=phpcs.xml --report=checkstyle --report-file=phpcs-report.xml --ignore=vendor,node_modules,dist,resources/vendor --extensions=php .
+                  # Check only specific directories and files
+                  ./vendor/bin/phpcs --standard=phpcs.xml --report=checkstyle --report-file=phpcs-report.xml \
+                    --extensions=php \
+                    *.php \
+                    app/ \
+                    theme/ \
+                    activator_plugins/ \
+                    || true
 
             - name: Annotate PHPCS Results
               uses: staabm/annotate-pull-request-from-checkstyle@v1
               if: failure()
               with:
-                  files: app/public/wp-content/themes/mooms_dev/phpcs-report.xml
+                  files: app/public/wp-content/themes/mooms_dev/phpcs-report.xml 

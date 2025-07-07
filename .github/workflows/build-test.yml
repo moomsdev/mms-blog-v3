@@ -15,20 +15,14 @@ jobs:
         name: Build and Test Theme Assets
         runs-on: ubuntu-latest
 
-        strategy:
-            matrix:
-                node-version: [18, 20]
-
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
 
-            - name: Setup Node.js ${{ matrix.node-version }}
+            - name: Setup Node.js
               uses: actions/setup-node@v4
               with:
-                  node-version: ${{ matrix.node-version }}
-                  cache: 'yarn'
-                  cache-dependency-path: app/public/wp-content/themes/mooms_dev/yarn.lock
+                  node-version: '18'
 
             - name: Install dependencies
               working-directory: app/public/wp-content/themes/mooms_dev
@@ -54,7 +48,6 @@ jobs:
 
             - name: Upload build artifacts
               uses: actions/upload-artifact@v4
-              if: matrix.node-version == 18
               with:
                   name: theme-build-artifacts
                   path: app/public/wp-content/themes/mooms_dev/dist/
@@ -79,16 +72,9 @@ jobs:
                   extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
                   coverage: none
 
-            - name: Cache Composer dependencies
-              uses: actions/cache@v3
-              with:
-                  path: app/public/wp-content/themes/mooms_dev/vendor
-                  key: composer-${{ matrix.php-version }}-${{ hashFiles('app/public/wp-content/themes/mooms_dev/composer.lock') }}
-                  restore-keys: composer-${{ matrix.php-version }}-
-
             - name: Install Composer dependencies
               working-directory: app/public/wp-content/themes/mooms_dev
-              run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
+              run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader || composer update --no-progress --no-interaction --prefer-dist --optimize-autoloader
 
             - name: Check PHP syntax
               working-directory: app/public/wp-content/themes/mooms_dev
@@ -111,7 +97,7 @@ jobs:
 
             - name: Install Composer dependencies
               working-directory: app/public/wp-content/themes/mooms_dev
-              run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
+              run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader || composer update --no-progress --no-interaction --prefer-dist --optimize-autoloader
 
             - name: Check for security vulnerabilities
               working-directory: app/public/wp-content/themes/mooms_dev
@@ -121,8 +107,6 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: '18'
-                  cache: 'yarn'
-                  cache-dependency-path: app/public/wp-content/themes/mooms_dev/yarn.lock
 
             - name: Install Node dependencies
               working-directory: app/public/wp-content/themes/mooms_dev

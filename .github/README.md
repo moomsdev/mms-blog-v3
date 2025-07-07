@@ -26,7 +26,7 @@ Thư mục này chứa các GitHub Actions workflows để tự động kiểm t
 
 **Trigger:** Push vào `master`/`develop` hoặc Pull Request vào `master`
 
--   ✅ Test build với multiple Node.js versions (18, 20)
+-   ✅ Test build với Node.js 18
 -   ✅ Test compatibility với multiple PHP versions (7.4, 8.0, 8.1, 8.2)
 -   ✅ Kiểm tra security vulnerabilities
 -   ✅ Upload build artifacts
@@ -100,7 +100,23 @@ Thêm badges vào README.md của theme:
 1. **Build fails:** Kiểm tra `yarn.lock` và `package.json` compatibility
 2. **PHPCS errors:** Xem file `phpcs.xml` và coding standards
 3. **Deploy fails:** Kiểm tra FTP credentials trong GitHub Secrets
-4. **Cache issues:** Manually clear cache trong Actions tab
+4. **Composer.lock missing:** Workflow sẽ tự động fallback sang `composer update`
+5. **PHPCS checking vendor:** Đã config ignore vendor, node_modules, dist directories
+6. **Cache issues:** Manually clear cache trong Actions tab
+
+### PHPCS Configuration:
+
+Current setup sử dụng **ignore approach** - check tất cả rồi ignore unwanted dirs:
+
+```bash
+./vendor/bin/phpcs --ignore=vendor,node_modules,dist --extensions=php .
+```
+
+**Alternative approach** - chỉ check specific directories (xem `alternative-phpcs.yml.example`):
+
+```bash
+./vendor/bin/phpcs *.php app/ theme/ activator_plugins/
+```
 
 ### Debug Commands (local):
 
@@ -112,7 +128,7 @@ yarn build
 
 # Test PHP standards
 composer install
-./vendor/bin/phpcs --standard=phpcs.xml .
+./vendor/bin/phpcs --standard=phpcs.xml --ignore=vendor,node_modules,dist --extensions=php .
 
 # Test linting
 npx eslint resources/scripts/**/*.js
