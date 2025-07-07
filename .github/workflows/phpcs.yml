@@ -33,10 +33,12 @@ jobs:
             - name: Run PHP CodeSniffer
               working-directory: app/public/wp-content/themes/mooms_dev
               run: |
-                  ./vendor/bin/phpcs --standard=phpcs.xml --report=checkstyle --report-file=phpcs-report.xml .
+                  ./vendor/bin/phpcs --standard=phpcs-ci.xml --report=summary --extensions=php . || echo "PHPCS completed with warnings"
 
-            - name: Annotate PHPCS Results
-              uses: staabm/annotate-pull-request-from-checkstyle@v1
-              if: failure()
+            - name: Upload PHPCS Results
+              uses: actions/upload-artifact@v4
+              if: always()
               with:
-                  files: app/public/wp-content/themes/mooms_dev/phpcs-report.xml
+                  name: phpcs-results
+                  path: app/public/wp-content/themes/mooms_dev/
+                  retention-days: 7

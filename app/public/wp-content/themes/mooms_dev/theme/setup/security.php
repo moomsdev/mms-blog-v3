@@ -591,7 +591,7 @@ class ThemeSecurity
 
         // Disable plugin/theme installation
         if (!defined('DISALLOW_FILE_MODS')) {
-            define('DISALLOW_FILE_MODS', true);
+            define('DISALLOW_FILE_MODS', false);
         }
     }
 

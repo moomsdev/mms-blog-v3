@@ -82,7 +82,7 @@ jobs:
             - name: Run PHPCS
               working-directory: app/public/wp-content/themes/mooms_dev
               run: |
-                  ./vendor/bin/phpcs --standard=phpcs-ci.xml --report=checkstyle --report-file=phpcs-report.xml --extensions=php . || echo "PHPCS completed with warnings"
+                  ./vendor/bin/phpcs --standard=phpcs-ci.xml --report=summary --extensions=php . || echo "PHPCS completed with warnings"
 
             - name: Run PHPMD (PHP Mess Detector)
               working-directory: app/public/wp-content/themes/mooms_dev
@@ -111,19 +111,15 @@ jobs:
                   WP_TESTS_DIR: /tmp/wordpress-tests-lib
                   WP_CORE_DIR: /tmp/wordpress
 
-            - name: Upload coverage reports
+            - name: Upload test results
               uses: actions/upload-artifact@v4
-              if: success()
-              with:
-                  name: coverage-reports
-                  path: app/public/wp-content/themes/mooms_dev/coverage-html/
-                  retention-days: 7
-
-            - name: Annotate PHPCS Results
-              uses: staabm/annotate-pull-request-from-checkstyle@v1
               if: always()
               with:
-                  files: app/public/wp-content/themes/mooms_dev/phpcs-report.xml
+                  name: test-results
+                  path: |
+                      app/public/wp-content/themes/mooms_dev/coverage-html/
+                      app/public/wp-content/themes/mooms_dev/phpcs-report.xml
+                  retention-days: 7
 
             - name: Comment test results on PR
               uses: marocchino/sticky-pull-request-comment@v2
