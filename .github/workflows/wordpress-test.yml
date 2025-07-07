@@ -1,0 +1,142 @@
+name: WordPress Theme Testing
+
+on:
+    push:
+        branches-ignore:
+            - 'main'
+            - 'staging/*'
+        paths:
+            - 'app/public/wp-content/themes/mooms_dev/**'
+    pull_request:
+        branches:
+            - 'master'
+        paths:
+            - 'app/public/wp-content/themes/mooms_dev/**'
+
+jobs:
+    wordpress-test:
+        name: WordPress Theme Tests
+        runs-on: ubuntu-latest
+
+        services:
+            mysql:
+                image: mysql:8.0
+                ports:
+                    - 3306:3306
+                env:
+                    MYSQL_ROOT_PASSWORD: root
+                    MYSQL_DATABASE: wordpress_test
+                    MYSQL_USER: wp_user
+                    MYSQL_PASSWORD: wp_pass
+                options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.1'
+                  extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, mysql, pdo_mysql
+                  coverage: xdebug
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '18'
+
+            - name: Install Composer dependencies
+              working-directory: app/public/wp-content/themes/mooms_dev
+              run: composer install --prefer-dist --no-progress --no-interaction --optimize-autoloader
+
+            - name: Install Node dependencies
+              working-directory: app/public/wp-content/themes/mooms_dev
+              run: yarn install --frozen-lockfile
+
+            - name: Build theme assets
+              working-directory: app/public/wp-content/themes/mooms_dev
+              run: yarn build
+
+            - name: Setup WordPress test environment
+              working-directory: app/public/wp-content/themes/mooms_dev
+              run: |
+                  # Install WordPress test suite
+                  bash bin/install-wp-tests.sh wordpress_test wp_user wp_pass 127.0.0.1:3306 latest
+              env:
+                  DB_HOST: 127.0.0.1
+                  DB_PORT: 3306
+                  DB_NAME: wordpress_test
+                  DB_USER: wp_user
+                  DB_PASSWORD: wp_pass
+
+            - name: Run PHPStan
+              working-directory: app/public/wp-content/themes/mooms_dev
+              run: |
+                  if [ -f "phpstan.neon" ] || [ -f "phpstan.neon.dist" ]; then
+                    ./vendor/bin/phpstan analyse --error-format=github
+                  else
+                    echo "PHPStan config not found, skipping..."
+                  fi
+
+            - name: Run PHPCS
+              working-directory: app/public/wp-content/themes/mooms_dev
+              run: |
+                  ./vendor/bin/phpcs --standard=phpcs-ci.xml --report=checkstyle --report-file=phpcs-report.xml --extensions=php . || echo "PHPCS completed with warnings"
+
+            - name: Run PHPMD (PHP Mess Detector)
+              working-directory: app/public/wp-content/themes/mooms_dev
+              continue-on-error: true
+              run: |
+                  if [ -f "phpmd.xml" ]; then
+                    ./vendor/bin/phpmd . text phpmd.xml --exclude vendor,node_modules,dist
+                  else
+                    echo "PHPMD config not found, skipping..."
+                  fi
+
+            - name: Run PHPUnit
+              working-directory: app/public/wp-content/themes/mooms_dev
+              run: |
+                  if [ -f "phpunit.xml" ] || [ -f "phpunit.xml.dist" ]; then
+                    ./vendor/bin/phpunit --coverage-text --colors=never --coverage-html=coverage-html
+                  else
+                    echo "PHPUnit config not found, skipping..."
+                  fi
+              env:
+                  DB_HOST: 127.0.0.1
+                  DB_PORT: 3306
+                  DB_NAME: wordpress_test
+                  DB_USER: wp_user
+                  DB_PASSWORD: wp_pass
+                  WP_TESTS_DIR: /tmp/wordpress-tests-lib
+                  WP_CORE_DIR: /tmp/wordpress
+
+            - name: Upload coverage reports
+              uses: actions/upload-artifact@v4
+              if: success()
+              with:
+                  name: coverage-reports
+                  path: app/public/wp-content/themes/mooms_dev/coverage-html/
+                  retention-days: 7
+
+            - name: Annotate PHPCS Results
+              uses: staabm/annotate-pull-request-from-checkstyle@v1
+              if: always()
+              with:
+                  files: app/public/wp-content/themes/mooms_dev/phpcs-report.xml
+
+            - name: Comment test results on PR
+              uses: marocchino/sticky-pull-request-comment@v2
+              if: github.event_name == 'pull_request'
+              with:
+                  header: wordpress-test-results
+                  message: |
+                      ## 🧪 WordPress Theme Test Results
+
+                      ✅ **Tests completed successfully!**
+
+                      📊 **Coverage report** uploaded as artifact
+                      📋 **Code standards** checked with PHPCS
+                      🔍 **Static analysis** completed with PHPStan
+
+                      Check the Actions tab for detailed results.

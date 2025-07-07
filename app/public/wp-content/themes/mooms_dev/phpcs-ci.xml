@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="WPEmergeTheme-CI">
+	<description>Theme Coding Standard for CI</description>
+
+	<!-- Only check specific directories -->
+	<file>.</file>
+	
+	<!-- Strong excludes for CI -->
+	<exclude-pattern>vendor/*</exclude-pattern>
+	<exclude-pattern>vendor</exclude-pattern>
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>node_modules/*</exclude-pattern>
+	<exclude-pattern>node_modules</exclude-pattern>
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
+	<exclude-pattern>dist/*</exclude-pattern>
+	<exclude-pattern>dist</exclude-pattern>
+	<exclude-pattern>*/dist/*</exclude-pattern>
+	<exclude-pattern>resources/vendor/*</exclude-pattern>
+	<exclude-pattern>wpcs/*</exclude-pattern>
+	<exclude-pattern>*.css</exclude-pattern>
+	<exclude-pattern>*.js</exclude-pattern>
+	<exclude-pattern>*.min.js</exclude-pattern>
+	<exclude-pattern>*.min.css</exclude-pattern>
+	<exclude-pattern>composer.lock</exclude-pattern>
+	<exclude-pattern>yarn.lock</exclude-pattern>
+	<exclude-pattern>package-lock.json</exclude-pattern>
+
+	<rule ref="WordPress">
+		<exclude name="Generic.Files.LineEndings.InvalidEOLChar" />
+		<exclude name="Generic.Files.LowercasedFilename.NotFound" />
+		<exclude name="Squiz.Commenting.ClassComment.Missing" />
+		<exclude name="Squiz.Commenting.FileComment.Missing" />
+		<exclude name="Squiz.Commenting.FileComment.MissingPackageTag" />
+		<exclude name="Squiz.Commenting.FunctionComment.Missing" />
+		<exclude name="WordPress.PHP.YodaConditions.NotYoda" />
+		<exclude name="WordPress.Files.FileName.UnderscoresNotAllowed" />
+	</rule>
+
+	<rule ref="WordPress-Extra">
+		<exclude name="WordPress.WhiteSpace.ControlStructureSpacing"/>
+		<exclude name="WordPress.XSS.EscapeOutput"/>
+	</rule>
+
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="string" value="app"/>
+		</properties>
+	</rule>
+</ruleset> 

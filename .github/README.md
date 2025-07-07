@@ -32,7 +32,20 @@ Thư mục này chứa các GitHub Actions workflows để tự động kiểm t
 -   ✅ Upload build artifacts
 -   ✅ Syntax checking
 
-### 4. 🚀 **ci.yml** - FTP Deploy
+### 4. 🧪 **wordpress-test.yml** - WordPress Theme Testing
+
+**Trigger:** Push/PR với thay đổi trong theme (trừ main/staging branches)
+
+-   ✅ Setup MySQL database cho testing
+-   ✅ Install WordPress test suite tự động
+-   ✅ Chạy PHPStan static analysis
+-   ✅ Chạy PHPCS với WordPress standards
+-   ✅ Chạy PHPMD (PHP Mess Detector)
+-   ✅ Chạy PHPUnit với coverage report
+-   ✅ Upload coverage artifacts
+-   ✅ Comment results vào PR
+
+### 5. 🚀 **ci.yml** - FTP Deploy
 
 **Trigger:** Push vào branch `master` với thay đổi trong theme
 
@@ -77,12 +90,13 @@ app/public/wp-content/themes/mooms_dev/
 
 ## 🔄 Workflow Triggers
 
-| Workflow    | Push to master | PR to master | File changes |
-| ----------- | -------------- | ------------ | ------------ |
-| theme-lint  | ✅             | ✅           | theme/\*\*   |
-| phpcs       | ✅             | ✅           | \*.php       |
-| build-test  | ✅             | ✅           | theme/\*\*   |
-| ci (deploy) | ✅             | ❌           | theme/\*\*   |
+| Workflow       | Push to master | PR to master | File changes | Special conditions   |
+| -------------- | -------------- | ------------ | ------------ | -------------------- |
+| theme-lint     | ✅             | ✅           | theme/\*\*   | -                    |
+| phpcs          | ✅             | ✅           | \*.php       | -                    |
+| build-test     | ✅             | ✅           | theme/\*\*   | -                    |
+| wordpress-test | ❌             | ✅           | theme/\*\*   | Exclude main/staging |
+| ci (deploy)    | ✅             | ❌           | theme/\*\*   | -                    |
 
 ## 📊 Status Badges
 
@@ -100,23 +114,7 @@ Thêm badges vào README.md của theme:
 1. **Build fails:** Kiểm tra `yarn.lock` và `package.json` compatibility
 2. **PHPCS errors:** Xem file `phpcs.xml` và coding standards
 3. **Deploy fails:** Kiểm tra FTP credentials trong GitHub Secrets
-4. **Composer.lock missing:** Workflow sẽ tự động fallback sang `composer update`
-5. **PHPCS checking vendor:** Đã config ignore vendor, node_modules, dist directories
-6. **Cache issues:** Manually clear cache trong Actions tab
-
-### PHPCS Configuration:
-
-Current setup sử dụng **ignore approach** - check tất cả rồi ignore unwanted dirs:
-
-```bash
-./vendor/bin/phpcs --ignore=vendor,node_modules,dist --extensions=php .
-```
-
-**Alternative approach** - chỉ check specific directories (xem `alternative-phpcs.yml.example`):
-
-```bash
-./vendor/bin/phpcs *.php app/ theme/ activator_plugins/
-```
+4. **Cache issues:** Manually clear cache trong Actions tab
 
 ### Debug Commands (local):
 
@@ -126,11 +124,16 @@ cd app/public/wp-content/themes/mooms_dev
 yarn install
 yarn build
 
-# Test PHP standards
+# Test PHP standards (CI config)
 composer install
-./vendor/bin/phpcs --standard=phpcs.xml --ignore=vendor,node_modules,dist --extensions=php .
+./vendor/bin/phpcs --standard=phpcs.xml .
 
 # Test linting
 npx eslint resources/scripts/**/*.js
 npx stylelint "resources/styles/**/*.scss"
+
+# WordPress testing tools
+./vendor/bin/phpstan analyse --error-format=table
+./vendor/bin/phpmd . text phpmd.xml --exclude vendor
+./vendor/bin/phpunit --coverage-text
 ```

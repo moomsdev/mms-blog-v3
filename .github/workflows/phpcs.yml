@@ -33,7 +33,7 @@ jobs:
             - name: Run PHP CodeSniffer
               working-directory: app/public/wp-content/themes/mooms_dev
               run: |
-                  ./vendor/bin/phpcs --standard=phpcs.xml --report=checkstyle --report-file=phpcs-report.xml --ignore=vendor,node_modules,dist,resources/vendor --extensions=php .
+                  ./vendor/bin/phpcs --standard=phpcs.xml --report=checkstyle --report-file=phpcs-report.xml .
 
             - name: Annotate PHPCS Results
               uses: staabm/annotate-pull-request-from-checkstyle@v1

@@ -1,0 +1,33 @@
+parameters:
+	level: 6
+	paths:
+		- app/src
+		- theme
+		- *.php
+	excludePaths:
+		- vendor
+		- node_modules
+		- dist
+		- resources/vendor
+	bootstrapFiles:
+		- vendor/autoload.php
+	ignoreErrors:
+		# WordPress specific ignores
+		- '#Function wp_[a-zA-Z_]+ not found\.#'
+		- '#Constant WP_[A-Z_]+ not found\.#'
+		- '#Function get_[a-zA-Z_]+ not found\.#'
+		- '#Function is_[a-zA-Z_]+ not found\.#'
+		- '#Function add_[a-zA-Z_]+ not found\.#'
+		- '#Function apply_filters not found\.#'
+		- '#Function do_action not found\.#'
+		- '#Function esc_[a-zA-Z_]+ not found\.#'
+		- '#Function __\(\) not found\.#'
+		- '#Function _e\(\) not found\.#'
+		- '#Function _n\(\) not found\.#'
+		- '#Class WP_[A-Za-z_]+ not found\.#'
+		- '#Global variable \$wp[a-zA-Z_]+ not found\.#'
+		# Theme specific ignores
+		- '#Call to undefined function app\(\)\.#'
+		- '#Call to undefined function config\(\)\.#'
+		- '#Call to undefined function view\(\)\.#'
+	reportUnmatchedIgnoredErrors: false 
