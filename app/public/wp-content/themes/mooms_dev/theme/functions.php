@@ -18,11 +18,11 @@ define('SUPER_USER', ['mooms.dev']);
 // =============================================================================
 
 define('AUTHOR', [
-    'name'           => 'La Cà Dev',
-    'email'          => 'support@mooms.dev',
-    'phone_number'   => '0989 64 67 66',
-    'website'        => 'https://mooms.dev/',
-    'date_started'   => get_option('_theme_info_date_started'),
+    'name' => 'La Cà Dev',
+    'email' => 'support@mooms.dev',
+    'phone_number' => '0989 64 67 66',
+    'website' => 'https://mooms.dev/',
+    'date_started' => get_option('_theme_info_date_started'),
     'date_published' => get_option('_theme_info_date_publish'),
 ]);
 
@@ -104,6 +104,12 @@ add_action('after_setup_theme', function () {
     require_once APP_APP_SETUP_DIR . 'menus.php';
     require_once APP_APP_SETUP_DIR . 'ajax.php';
 
+    // Load advanced optimization modules
+    require_once APP_APP_SETUP_DIR . 'performance.php';
+    require_once APP_APP_SETUP_DIR . 'security.php';
+    require_once APP_APP_SETUP_DIR . 'security-admin.php';
+    require_once APP_APP_SETUP_DIR . 'assets.php';
+
     // Load Gutenberg blocks
     $blocks_dir = APP_APP_SETUP_DIR . '/blocks';
     $block_files = glob($blocks_dir . '/*.php');
@@ -125,7 +131,7 @@ add_action('init', static function () {
     remove_filter('the_content_feed', 'wp_staticize_emoji');
     remove_filter('comment_text_rss', 'wp_staticize_emoji');
     remove_filter('wp_mail', 'wp_staticize_emoji_for_email');
-    
+
     add_filter('tiny_mce_plugins', static function ($plugins) {
         return is_array($plugins) ? array_diff($plugins, ['wpemoji']) : [];
     });
@@ -145,7 +151,8 @@ add_filter('style_loader_tag', function ($html, $handle) {
 }, 10, 2);
 
 // Prevent thumbnail generation
-function remove_all_image_sizes($sizes) {
+function remove_all_image_sizes($sizes)
+{
     return array();
 }
 add_filter('intermediate_image_sizes_advanced', 'remove_all_image_sizes');
@@ -154,7 +161,8 @@ add_filter('intermediate_image_sizes_advanced', 'remove_all_image_sizes');
 // EDITOR CUSTOMIZATIONS
 // =============================================================================
 
-function tinymce_allow_unsafe_link_target($mceInit) {
+function tinymce_allow_unsafe_link_target($mceInit)
+{
     $mceInit['allow_unsafe_link_target'] = true;
     return $mceInit;
 }
@@ -163,8 +171,9 @@ function tinymce_allow_unsafe_link_target($mceInit) {
 // SCRIPTS & STYLES
 // =============================================================================
 
-function my_theme_enqueue_scripts() {
-    wp_enqueue_script('my-theme-script', get_template_directory_uri() . '/js/script.js', array('jquery'), null, true);
+function my_theme_enqueue_scripts()
+{
+    wp_enqueue_script('my-theme-script', get_template_directory_uri() . '/dist/script.js', array('jquery'), null, true);
     wp_localize_script('my-theme-script', 'ajaxurl', admin_url('admin-ajax.php'));
 }
 add_action('wp_enqueue_scripts', 'my_theme_enqueue_scripts');
@@ -231,10 +240,10 @@ add_action('wp_ajax_nopriv_ajax_search', 'ajax_search');
 add_action('wp_ajax_ajax_search', 'ajax_search');
 function custom_ajax_script()
 {
-?>
+    ?>
     <script type="text/javascript">
-        jQuery(document).ready(function($) {
-            $('#search-input').on('input', function() {
+        jQuery(document).ready(function ($) {
+            $('#search-input').on('input', function () {
                 var searchQuery = $(this).val();
 
                 if (searchQuery.length > 2) {
@@ -245,15 +254,15 @@ function custom_ajax_script()
                             action: 'ajax_search',
                             s: searchQuery
                         },
-                        beforeSend: function() {
+                        beforeSend: function () {
                             // Bạn có thể hiển thị một biểu tượng loading ở đây
                         },
-                        success: function(response) {
+                        success: function (response) {
                             // Hiển thị kết quả tìm kiếm
                             $('.modal-body .search-results')
                                 .html(response);
                         },
-                        error: function() {
+                        error: function () {
                             // Hiển thị thông báo lỗi nếu có
                         }
                     });
@@ -263,7 +272,7 @@ function custom_ajax_script()
             });
         });
     </script>
-<?php
+    <?php
 }
 add_action('wp_footer', 'custom_ajax_script');
 
@@ -272,3 +281,55 @@ add_action('wp_footer', 'custom_ajax_script');
 // =============================================================================
 
 new \App\PostTypes\blog();
+
+// =============================================================================
+// LEGACY OPTIMIZATIONS (Now handled by performance.php and security.php)
+// =============================================================================
+// Note: Advanced optimizations are now handled by dedicated modules
+
+// =============================================================================
+// LEGACY IMAGE & CSS OPTIMIZATIONS (Now handled by performance.php)
+// =============================================================================
+// Note: Advanced image and CSS optimizations are now handled by ThemePerformance class
+
+// =============================================================================
+// NOTE: SECURITY ADMIN PANEL
+// =============================================================================
+// Security admin panel is now handled by security-admin.php file
+// This prevents duplicate menu items in WordPress admin
+
+// Test: Tạo sample security logs để test dashboard
+add_action('wp_loaded', function () {
+    // Chỉ chạy 1 lần để tạo sample data
+    if (!get_option('security_test_data_created')) {
+        // Tạo sample security logs
+        $sample_logs = [
+            [
+                'timestamp' => date('Y-m-d H:i:s', strtotime('-2 hours')),
+                'event' => 'Failed login attempt',
+                'ip' => '192.168.1.100',
+                'data' => ['username' => 'admin', 'attempts' => 3]
+            ],
+            [
+                'timestamp' => date('Y-m-d H:i:s', strtotime('-1 hour')),
+                'event' => 'Suspicious file upload',
+                'ip' => '10.0.0.50',
+                'data' => ['filename' => 'malicious.php', 'size' => '2048']
+            ],
+            [
+                'timestamp' => date('Y-m-d H:i:s', strtotime('-30 minutes')),
+                'event' => 'SQL injection attempt',
+                'ip' => '203.0.113.1',
+                'data' => ['query' => 'SELECT * FROM wp_users']
+            ]
+        ];
+
+        update_option('security_logs', $sample_logs);
+        update_option('security_test_data_created', true);
+    }
+});
+
+// Test: Đảm bảo AJAX URL có sẵn trong admin
+add_action('admin_head', function () {
+    echo '<script>var ajaxurl = "' . admin_url('admin-ajax.php') . '";</script>';
+});

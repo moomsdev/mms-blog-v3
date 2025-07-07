@@ -1,0 +1,11 @@
+# Fix MIME type for JavaScript files
+<Files "*.js">
+    AddType application/javascript .js
+    Header set Content-Type "application/javascript"
+</Files>
+
+# Allow access to JS files
+<Files "*.js">
+    Order allow,deny
+    Allow from all
+</Files> 
