@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ruleset name="WPEmergeTheme">
-	<description>Theme Coding Standard</description>
+	<description>Applies WordPress Coding Standards</description>
 
 	<!-- Excludes -->
 	<exclude-pattern>app/src/*</exclude-pattern>
