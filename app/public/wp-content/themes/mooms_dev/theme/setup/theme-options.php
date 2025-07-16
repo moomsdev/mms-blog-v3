@@ -12,8 +12,9 @@
 use Carbon_Fields\Container\Container;
 use Carbon_Fields\Field\Field;
 
-$optionsPage = Container::make('theme_options', __('Theme Options', 'mms'))
+$optionsPage = Container::make('theme_options', __('MMS Theme', 'mms'))
 	->set_page_file('app-theme-options.php')
+	->set_page_menu_position(3)
 	->add_tab(__('Branding | Thương hiệu', 'mms'), [
 		Field::make('image', 'logo' . currentLanguage(), __('Logo', 'mms'))
 			->set_width(33.33),

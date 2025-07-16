@@ -106,8 +106,6 @@ add_action('after_setup_theme', function () {
 
     // Load advanced optimization modules
     require_once APP_APP_SETUP_DIR . 'performance.php';
-    require_once APP_APP_SETUP_DIR . 'security.php';
-    require_once APP_APP_SETUP_DIR . 'security-admin.php';
     require_once APP_APP_SETUP_DIR . 'assets.php';
 
     // Load Gutenberg blocks
@@ -281,55 +279,3 @@ add_action('wp_footer', 'custom_ajax_script');
 // =============================================================================
 
 new \App\PostTypes\blog();
-
-// =============================================================================
-// LEGACY OPTIMIZATIONS (Now handled by performance.php and security.php)
-// =============================================================================
-// Note: Advanced optimizations are now handled by dedicated modules
-
-// =============================================================================
-// LEGACY IMAGE & CSS OPTIMIZATIONS (Now handled by performance.php)
-// =============================================================================
-// Note: Advanced image and CSS optimizations are now handled by ThemePerformance class
-
-// =============================================================================
-// NOTE: SECURITY ADMIN PANEL
-// =============================================================================
-// Security admin panel is now handled by security-admin.php file
-// This prevents duplicate menu items in WordPress admin
-
-// Test: Tạo sample security logs để test dashboard
-add_action('wp_loaded', function () {
-    // Chỉ chạy 1 lần để tạo sample data
-    if (!get_option('security_test_data_created')) {
-        // Tạo sample security logs
-        $sample_logs = [
-            [
-                'timestamp' => date('Y-m-d H:i:s', strtotime('-2 hours')),
-                'event' => 'Failed login attempt',
-                'ip' => '192.168.1.100',
-                'data' => ['username' => 'admin', 'attempts' => 3]
-            ],
-            [
-                'timestamp' => date('Y-m-d H:i:s', strtotime('-1 hour')),
-                'event' => 'Suspicious file upload',
-                'ip' => '10.0.0.50',
-                'data' => ['filename' => 'malicious.php', 'size' => '2048']
-            ],
-            [
-                'timestamp' => date('Y-m-d H:i:s', strtotime('-30 minutes')),
-                'event' => 'SQL injection attempt',
-                'ip' => '203.0.113.1',
-                'data' => ['query' => 'SELECT * FROM wp_users']
-            ]
-        ];
-
-        update_option('security_logs', $sample_logs);
-        update_option('security_test_data_created', true);
-    }
-});
-
-// Test: Đảm bảo AJAX URL có sẵn trong admin
-add_action('admin_head', function () {
-    echo '<script>var ajaxurl = "' . admin_url('admin-ajax.php') . '";</script>';
-});

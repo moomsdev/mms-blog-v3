@@ -311,33 +311,6 @@ class AdminSettings
 		}, 10, 2);
 	}
 
-	public function createAdminOptions()
-	{
-		add_action('carbon_fields_register_fields', static function () {
-			$options = Container::make('theme_options', __('Admin', 'mms'))
-				->set_page_file(__('mms-admin-settings', 'mms'))
-				->set_page_menu_position(2)
-				->add_tab(__('ADMIN', 'mms'), [
-					Field::make('checkbox', 'is_maintenance', __('Turn on website maintenance mode', 'mms')),
-					Field::make('checkbox', 'disable_admin_confirm_email', __('Turn off the feature to change email admin need to verify email', 'mms'))->set_default_value('true'),
-					Field::make('checkbox', 'disable_use_weak_password', __('Turn off the feature that allows the use of weak passwords', 'mms')),
-					Field::make('checkbox', 'disable_use_jquery_migrate', __('Turn off the feature that allows the use of jQuery Migrate', 'mms')),
-					Field::make('checkbox', 'hide_post_menu_default', __('Hide post menu default', 'mms')),
-					Field::make('checkbox', 'hide_comment_menu_default', __('Hide comment menu default', 'mms')),
-				])
-				->add_tab(__('SMTP', 'mms'), [
-					Field::make('checkbox', 'use_smtp', __('Sử dụng SMTP để gửi mail', 'mms')),
-					Field::make('separator', 'smtp_separator_1', __('Thông tin máy chủ SMTP', 'mms')),
-					Field::make('text', 'smtp_host', __('Địa chỉ máy chủ', 'mms'))->set_default_value('smtp.gmail.com'),
-					Field::make('text', 'smtp_port', __('Cổng máy chủ', 'mms'))->set_default_value('587'),
-					Field::make('text', 'smtp_secure', __('Phương thức mã hóa', 'mms'))->set_default_value('TLS'),
-					Field::make('separator', 'smtp_separator_2', __('Thông tin email hệ thống', 'mms')),
-					Field::make('text', 'smtp_username', __('Địa chỉ email', 'mms'))->set_default_value('mooms.dev@gmail.com'),
-					Field::make('text', 'smtp_password', __('Mật khẩu', 'mms'))->set_default_value('utakxthdfibquxos'),
-				]);
-		});
-	}
-
 	public function hideSuperUsers()
 	{
 		add_action('pre_user_query', function ($user_search) {
@@ -514,6 +487,40 @@ class AdminSettings
 					$script->deps = array_diff($script->deps, ['jquery-migrate']);
 				}
 			}
+		});
+	}
+
+	public function createAdminOptions()
+	{
+		add_action('carbon_fields_register_fields', static function () {
+			$options = Container::make('theme_options', __('MMS Admin', 'mms'))
+				->set_page_file(__('mms-admin', 'mms'))
+				->set_page_menu_position(3)
+				->add_tab(__('ADMIN', 'mms'), [
+					Field::make('checkbox', 'is_maintenance', __('Turn on website maintenance mode', 'mms')),
+					Field::make('checkbox', 'disable_admin_confirm_email', __('Turn off the feature to change email admin need to verify email', 'mms'))->set_default_value('true'),
+					Field::make('checkbox', 'disable_use_weak_password', __('Turn off the feature that allows the use of weak passwords', 'mms')),
+					Field::make('checkbox', 'disable_use_jquery_migrate', __('Turn off the feature that allows the use of jQuery Migrate', 'mms')),
+					Field::make('checkbox', 'hide_post_menu_default', __('Hide post menu default', 'mms')),
+					Field::make('checkbox', 'hide_comment_menu_default', __('Hide comment menu default', 'mms')),
+				])
+				->add_tab(__('SMTP', 'mms'), [
+					Field::make('checkbox', 'use_smtp', __('Sử dụng SMTP để gửi mail', 'mms')),
+					Field::make('separator', 'smtp_separator_1', __('Thông tin máy chủ SMTP', 'mms')),
+					Field::make('text', 'smtp_host', __('Địa chỉ máy chủ', 'mms'))->set_default_value('smtp.gmail.com'),
+					Field::make('text', 'smtp_port', __('Cổng máy chủ', 'mms'))->set_default_value('587'),
+					Field::make('text', 'smtp_secure', __('Phương thức mã hóa', 'mms'))->set_default_value('TLS'),
+					Field::make('separator', 'smtp_separator_2', __('Thông tin email hệ thống', 'mms')),
+					Field::make('text', 'smtp_username', __('Địa chỉ email', 'mms'))->set_default_value('mooms.dev@gmail.com'),
+					Field::make('text', 'smtp_password', __('Mật khẩu', 'mms'))->set_default_value('utakxthdfibquxos'),
+				]);
+
+				Container::make('theme_options', __('Tools', 'mms'))
+				->set_page_parent($options)
+				->set_page_file(__('mms-tools', 'mms'))
+				->add_fields([
+					Field::make('media_gallery', 'main_slider', __('Slider banner __ 1440x480', 'mms')),
+				]);
 		});
 	}
 }
