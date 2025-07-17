@@ -34,6 +34,7 @@ new \App\Settings\AdminSettings();
 new \App\Settings\AutoDownloadImage();
 new \App\Settings\CustomLoginPage();
 new \App\Settings\ThemeSettings();
+new \App\Settings\MMSTools\Optimize();
 
 // phpcs:disable
 /**

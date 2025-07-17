@@ -32,7 +32,7 @@ function currentLanguage()
 
 function adminAsset($path)
 {
-    return get_stylesheet_directory_uri() . '/resources/admin/' . $path;
+    return get_stylesheet_directory_uri() . '/../resources/admin/' . $path;
 }
 
 function loadStyles($files = [])

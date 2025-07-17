@@ -50,9 +50,7 @@ class AdminSettings
 			$this->disableCheckboxUseWeakPassword();
 		}
 
-		if (get_option('_disable_use_jquery_migrate') === 'yes') {
-			$this->disableUseJqueryMigrate();
-		}
+
 
 		if (get_option('_hide_post_menu_default') === 'yes') {
 			$this->hidePostMenuDefault();
@@ -478,17 +476,7 @@ class AdminSettings
 		});
 	}
 
-	public function disableUseJqueryMigrate()
-	{
-		add_action('wp_default_scripts', function ($scripts) {
-			if (!is_admin() && isset($scripts->registered['jquery'])) {
-				$script = $scripts->registered['jquery'];
-				if ($script->deps) {
-					$script->deps = array_diff($script->deps, ['jquery-migrate']);
-				}
-			}
-		});
-	}
+
 
 	public function createAdminOptions()
 	{
@@ -497,12 +485,35 @@ class AdminSettings
 				->set_page_file(__('mms-admin', 'mms'))
 				->set_page_menu_position(3)
 				->add_tab(__('ADMIN', 'mms'), [
-					Field::make('checkbox', 'is_maintenance', __('Turn on website maintenance mode', 'mms')),
-					Field::make('checkbox', 'disable_admin_confirm_email', __('Turn off the feature to change email admin need to verify email', 'mms'))->set_default_value('true'),
-					Field::make('checkbox', 'disable_use_weak_password', __('Turn off the feature that allows the use of weak passwords', 'mms')),
-					Field::make('checkbox', 'disable_use_jquery_migrate', __('Turn off the feature that allows the use of jQuery Migrate', 'mms')),
-					Field::make('checkbox', 'hide_post_menu_default', __('Hide post menu default', 'mms')),
-					Field::make('checkbox', 'hide_comment_menu_default', __('Hide comment menu default', 'mms')),
+					Field::make('checkbox', 'is_maintenance', __('Bật chế độ bảo trì', 'mms')) 
+						->set_width(30),
+					Field::make( 'html', 'is_maintenance_desc' )
+						->set_width(70)
+						->set_html( '<i class="fa-regular fa-lightbulb-on"></i>Khi bật chế độ bảo trì, tất cả người dùng sẽ không thể truy cập vào trang web của bạn. Bạn có thể tạm thời đóng băng trang web để tránh việc người dùng truy cập vào trang web của bạn.' ),
+					
+					Field::make('checkbox', 'disable_admin_confirm_email', __('Tắt chức năng xác thực email khi thay đổi email admin', 'mms'))
+						->set_width(30),
+					Field::make( 'html', 'disable_admin_confirm_email_desc' )
+						->set_width(70)
+						->set_html( '<i class="fa-regular fa-lightbulb-on"></i>Khi bật chế độ này, bạn sẽ không cần phải xác thực email khi thay đổi email admin.' ),
+					
+					Field::make('checkbox', 'disable_use_weak_password', __('Tắt chức năng sử dụng mật khẩu yếu', 'mms'))
+						->set_width(30),
+					Field::make( 'html', 'disable_use_weak_password_desc' )
+						->set_width(70)
+						->set_html( '<i class="fa-regular fa-lightbulb-on"></i>Khi bật chế độ này, bạn sẽ không thể sử dụng mật khẩu yếu.' ),
+
+					Field::make('checkbox', 'hide_post_menu_default', __('Ẩn menu bài viết mặc định', 'mms'))
+						->set_width(30),
+					Field::make( 'html', 'hide_post_menu_default_desc' )
+						->set_width(70)
+						->set_html( '<i class="fa-regular fa-lightbulb-on"></i>Khi bật chế độ này, bạn sẽ không thể xem menu bài viết trong trang admin.' ),
+
+					Field::make('checkbox', 'hide_comment_menu_default', __('Ẩn menu bình luận mặc định', 'mms'))
+						->set_width(30),
+					Field::make( 'html', 'hide_comment_menu_default_desc' )
+						->set_width(70)
+						->set_html( '<i class="fa-regular fa-lightbulb-on"></i>Khi bật chế độ này, bạn sẽ không thể xem menu bình luận trong trang admin.' ),
 				])
 				->add_tab(__('SMTP', 'mms'), [
 					Field::make('checkbox', 'use_smtp', __('Sử dụng SMTP để gửi mail', 'mms')),
@@ -515,12 +526,73 @@ class AdminSettings
 					Field::make('text', 'smtp_password', __('Mật khẩu', 'mms'))->set_default_value('utakxthdfibquxos'),
 				]);
 
-				Container::make('theme_options', __('Tools', 'mms'))
-				->set_page_parent($options)
-				->set_page_file(__('mms-tools', 'mms'))
-				->add_fields([
-					Field::make('media_gallery', 'main_slider', __('Slider banner __ 1440x480', 'mms')),
-				]);
+			Container::make('theme_options', __('Tools', 'mms'))
+			->set_page_parent($options)
+			->set_page_file(__('mms-tools', 'mms'))
+			->add_tab(__('Optimization', 'mms'), [
+				// Disable unnecessary items
+				Field::make( 'separator', 'title_disable_unnecessary_items', __( 'Disable unnecessary items' ) ),
+				Field::make('checkbox', 'disable_use_jquery_migrate', __('Disable jQuery Migrate', 'mms'))
+					->set_width(30),
+				Field::make( 'html', 'disable_use_jquery_migrate_desc' )
+					->set_width(70)
+					->set_html( '<i class="fa-regular fa-lightbulb-on"></i> jQuery Migrate là thư viện được sử dụng để duy trì hoạt động của các plugin và theme cũ. Nếu bạn không sử dụng plugin này, bạn có thể tắt nó để tăng tốc độ tải trang.' ),
+					
+				Field::make('checkbox', 'disable_gutenberg_css', __('Disable Gutenberg CSS', 'mms'))
+					->set_width(30),
+				Field::make( 'html', 'gutenberg_css_desc' )
+					->set_width(70)
+					->set_html( '<i class="fa-regular fa-lightbulb-on"></i> Gutenberg CSS là thư viện được sử dụng để duy trì hoạt động của các plugin và theme cũ. Nếu bạn không sử dụng plugin này, bạn có thể tắt nó để tăng tốc độ tải trang.' ),
+					
+				Field::make('checkbox', 'disable_classic_css', __('Disable Classic CSS', 'mms'))
+					->set_width(30),
+				Field::make( 'html', 'classic_css_desc' )
+					->set_width(70)
+					->set_html( '<i class="fa-regular fa-lightbulb-on"></i> Classic CSS là thư viện được sử dụng để duy trì hoạt động của các plugin và theme cũ. Nếu bạn không sử dụng plugin này, bạn có thể tắt nó để tăng tốc độ tải trang.' ),
+					
+				Field::make('checkbox', 'disable_emoji', __('Disable Emoji', 'mms'))
+					->set_width(30),
+				Field::make( 'html', 'emoji_desc' )
+					->set_width(70)
+					->set_html( '<i class="fa-regular fa-lightbulb-on"></i> Emoji là thư viện được sử dụng để hiển thị các biểu tượng trong trang web. Nếu bạn không sử dụng plugin này, bạn có thể tắt nó để tăng tốc độ tải trang.' ),
+				
+				// Optimization Library
+				Field::make( 'separator', 'title_optimization_library', __( 'Optimization Library' ) ),
+				Field::make('checkbox', 'enable_instant_page', __('Enable Instant-page', 'mms'))
+					->set_width(30),
+				Field::make( 'html', 'instant_page_desc' )
+					->set_width(70)
+					->set_html( '<i class="fa-regular fa-lightbulb-on"></i> Instant-Page là một thư viện cho phép bạn tải trước nội dung của trang được liên kết vào bộ nhớ trình duyệt chỉ bằng cách di chuyển qua liên kết. Khi bạn nhấp vào liên kết, nó cung cấp trải nghiệm tải nhanh đáng kể' ),
+					
+				Field::make('checkbox', 'enable_smooth_scroll', __('Enable Smooth-scroll', 'mms'))
+					->set_width(30),
+				Field::make( 'html', 'smooth_scroll_desc' )
+					->set_width(70)
+					->set_html( '<i class="fa-regular fa-lightbulb-on"></i> Smooth-scroll là thư viện cho phép bạn tạo hiệu ứng cuộn mượt mà, cung cấp cho người dùng cảm giác điều hướng trang nhanh hơn.' ),
+					
+				// The function of lazy loading images
+				Field::make( 'separator', 'title_lazy_loading_images', __( 'The function of lazy loading images' ) ),
+				Field::make('checkbox', 'enable_lazy_loading_images', __('Enable image lazy loading', 'mms'))
+					->set_width(30),
+				Field::make( 'html', 'lazy_loading_images_desc' )
+					->set_width(70)
+					->set_html( '<i class="fa-regular fa-lightbulb-on"></i> Nếu bạn muốn lazy load hình ảnh mỗi khi trang tải, hãy bật tính năng này. Chức năng này giúp trang web của bạn tải nhanh hơn' ),
+
+				// Compress HTML into a single line
+				Field::make( 'separator', 'title_compress_html', __( 'Compress HTML into a single line' ) ),
+				Field::make('checkbox', 'enable_compress_html', __('Enable compress HTML', 'mms'))
+					->set_width(30),
+				Field::make( 'html', 'compress_html_desc' )
+					->set_width(70)
+					->set_html( '<i class="fa-regular fa-lightbulb-on"></i> Với tính năng này, HTML sẽ được nén thành một dòng duy nhất, loại bỏ các ký tự và khoảng trắng không cần thiết để tăng tốc độ tải trang. <br> <b>Đừng bật nếu bạn đang sử dụng plugin tối ưu hóa với chức năng tương tự (xung đột)</b>' ),
+					
+				Field::make('checkbox', 'minify_inline_javascript', __('Minify Inline JavaScript', 'mms')),
+				Field::make('checkbox', 'remove_comments', __('Remove comments from HTML, JavaScript, and CSS', 'mms')),
+				Field::make('checkbox', 'remove_xhtml_closing_tags', __('Remove XHTML closing tags from empty elements in HTML5', 'mms')),
+				Field::make('checkbox', 'remove_relative_domain', __('Remove relative domain from internal URLs', 'mms')),
+				Field::make('checkbox', 'remove_protocols', __('Remove protocols (HTTP: and HTTPS:) from all URLs', 'mms')),
+				Field::make('checkbox', 'support_multi_byte_utf_8', __('Support multi-byte UTF-8 encoding (if you see strange characters)', 'mms')),
+			]);
 		});
 	}
 }
