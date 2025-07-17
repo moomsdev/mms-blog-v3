@@ -171,7 +171,6 @@ function tinymce_allow_unsafe_link_target($mceInit)
 
 function my_theme_enqueue_scripts()
 {
-    wp_enqueue_script('my-theme-script', get_template_directory_uri() . '/dist/script.js', array('jquery'), null, true);
     wp_localize_script('my-theme-script', 'ajaxurl', admin_url('admin-ajax.php'));
 }
 add_action('wp_enqueue_scripts', 'my_theme_enqueue_scripts');

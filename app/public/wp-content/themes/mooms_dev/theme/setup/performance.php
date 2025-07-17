@@ -137,24 +137,7 @@ class ThemePerformance
      */
     public static function add_advanced_resource_hints()
     {
-        ?>
-        <!-- DNS Prefetch for external domains -->
-        <link rel="dns-prefetch" href="//fonts.googleapis.com">
-        <link rel="dns-prefetch" href="//fonts.gstatic.com">
-        <link rel="dns-prefetch" href="//ajax.googleapis.com">
-
-        <!-- Preconnect to critical domains -->
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-        <!-- Prefetch likely next pages -->
-        <?php if (is_home() || is_front_page()): ?>
-            <link rel="prefetch" href="<?= get_permalink(get_option('page_for_posts')); ?>">
-        <?php endif; ?>
-
-        <!-- Preload critical resources -->
-        <link rel="preload" href="<?= get_template_directory_uri(); ?>/dist/styles/theme.css" as="style">
-        <link rel="preload" href="<?= get_template_directory_uri(); ?>/dist/theme.js" as="script">
-        <?php
+        // Đã có filter wp_resource_hints trong assets.php, không cần in HTML thủ công nữa
     }
 
     /**
