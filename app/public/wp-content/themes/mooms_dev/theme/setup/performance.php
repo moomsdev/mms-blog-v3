@@ -18,7 +18,6 @@ class ThemePerformance
     {
         // Core WordPress optimizations
         add_action('init', [self::class, 'remove_wordpress_bloat']);
-        add_action('wp_enqueue_scripts', [self::class, 'optimize_wp_scripts']);
 
         // Advanced caching
         add_action('template_redirect', [self::class, 'set_cache_headers']);
@@ -59,27 +58,18 @@ class ThemePerformance
         remove_action('wp_head', 'feed_links_extra', 3);
         remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10);
         remove_action('wp_head', 'wp_shortlink_wp_head', 10);
-
-        // Disable embeds
-        remove_action('wp_head', 'wp_oembed_add_discovery_links');
-        remove_action('wp_head', 'wp_oembed_add_host_js');
-
-        // Disable REST API for non-logged users
-        add_filter('rest_authentication_errors', function ($result) {
-            if (!is_user_logged_in()) {
-                return new WP_Error('rest_cannot_access', 'REST API restricted.', array('status' => 403));
-            }
-            return $result;
-        });
-
-        // Disable XML-RPC
-        add_filter('xmlrpc_enabled', '__return_false');
+        remove_action('wp_head', 'start_post_rel_link');
+        remove_action('wp_head', 'index_rel_link');
+        remove_action('wp_head', 'parent_post_rel_link', 10, 0);
 
         // Optimize heartbeat
         add_filter('heartbeat_settings', function ($settings) {
             $settings['interval'] = 120; // 2 minutes instead of 15 seconds
             return $settings;
         });
+
+        // Remove login errors
+        add_filter('login_errors', '__return_null');
     }
 
     /**
@@ -102,14 +92,6 @@ class ThemePerformance
                 header('Vary: Accept-Encoding');
             }
         }
-    }
-
-    /**
-     * Add advanced resource hints
-     */
-    public static function add_advanced_resource_hints()
-    {
-        // Đã có filter wp_resource_hints trong assets.php, không cần in HTML thủ công nữa
     }
 
     /**

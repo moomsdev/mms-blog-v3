@@ -36,3 +36,31 @@ html :where(.wp-block) {
     z-index: 9999;
     position: relative;
 }
+
+input[name="carbon_fields_compact_input[_smtp_password]"] {
+    max-width: 85%;
+    display: inline-block;
+}
+
+button[data-toggle="password-toggle"] {
+    padding: 2px 2rem;
+    min-width: 12%;
+    display: inline-block;
+    font-weight: 600;
+    line-height: 2;
+    text-transform: uppercase;
+    color: #fff;
+    background: #1d2327;
+    border: 1px solid;
+    border-radius: 4px;
+}
+
+#wp-auth-check-wrap #wp-auth-check {
+    padding: 0 !important;
+    width: 80% !important;
+}
+
+#wp-auth-check-wrap .wp-auth-check-close {
+    color: #fff !important;
+    z-index: 99;
+}

@@ -105,7 +105,6 @@ add_action('after_setup_theme', function () {
     require_once APP_APP_SETUP_DIR . 'ajax.php';
 
     // Load advanced optimization modules
-    require_once APP_APP_SETUP_DIR . 'performance.php';
     require_once APP_APP_SETUP_DIR . 'assets.php';
 
     // Load Gutenberg blocks

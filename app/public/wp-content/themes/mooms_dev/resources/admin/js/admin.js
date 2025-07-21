@@ -89,3 +89,32 @@ jQuery(function () {
     }
   });
 });
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  // Tìm trường password bằng thuộc tính data-field
+  const passwordField = document.querySelector('input[data-field="password-field"]');
+  if (passwordField) {
+      // Tạo nút toggle
+      const toggleButton = document.createElement('button');
+      toggleButton.type = 'button';
+      toggleButton.innerHTML = 'Show'; // Biểu tượng con mắt
+      toggleButton.style.marginLeft = '5px';
+      toggleButton.style.cursor = 'pointer';
+      toggleButton.setAttribute('data-toggle', 'password-toggle'); // Thêm data-* cho nút toggle
+
+      // Chèn nút toggle ngay sau trường password
+      passwordField.parentNode.appendChild(toggleButton);
+
+      // Xử lý sự kiện click để toggle hiển thị/ẩn
+      toggleButton.addEventListener('click', function () {
+          if (passwordField.type === 'password') {
+              passwordField.type = 'text';
+              toggleButton.innerHTML = 'Hide'; // Biểu tượng ẩn
+          } else {
+              passwordField.type = 'password';
+              toggleButton.innerHTML = 'Show'; // Biểu tượng hiển thị
+          }
+      });
+  }
+});

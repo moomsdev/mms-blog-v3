@@ -489,41 +489,55 @@ class AdminSettings
 						->set_width(30),
 					Field::make( 'html', 'is_maintenance_desc' )
 						->set_width(70)
-						->set_html( '<i class="fa-regular fa-lightbulb-on"></i>Khi bật chế độ bảo trì, tất cả người dùng sẽ không thể truy cập vào trang web của bạn. Bạn có thể tạm thời đóng băng trang web để tránh việc người dùng truy cập vào trang web của bạn.' ),
+						->set_html( '<i class="fa-regular fa-lightbulb-on"></i> Khi bật chế độ bảo trì, tất cả người dùng sẽ không thể truy cập vào trang web của bạn. Bạn có thể tạm thời đóng băng trang web để tránh việc người dùng truy cập vào trang web của bạn.' ),
 					
 					Field::make('checkbox', 'disable_admin_confirm_email', __('Tắt chức năng xác thực email khi thay đổi email admin', 'mms'))
 						->set_width(30),
 					Field::make( 'html', 'disable_admin_confirm_email_desc' )
 						->set_width(70)
-						->set_html( '<i class="fa-regular fa-lightbulb-on"></i>Khi bật chế độ này, bạn sẽ không cần phải xác thực email khi thay đổi email admin.' ),
+						->set_html( '<i class="fa-regular fa-lightbulb-on"></i> Khi bật chế độ này, bạn sẽ không cần phải xác thực email khi thay đổi email admin.' ),
 					
 					Field::make('checkbox', 'disable_use_weak_password', __('Tắt chức năng sử dụng mật khẩu yếu', 'mms'))
 						->set_width(30),
 					Field::make( 'html', 'disable_use_weak_password_desc' )
 						->set_width(70)
-						->set_html( '<i class="fa-regular fa-lightbulb-on"></i>Khi bật chế độ này, bạn sẽ không thể sử dụng mật khẩu yếu.' ),
+						->set_html( '<i class="fa-regular fa-lightbulb-on"></i> Khi bật chế độ này, bạn sẽ không thể sử dụng mật khẩu yếu.' ),
 
 					Field::make('checkbox', 'hide_post_menu_default', __('Ẩn menu bài viết mặc định', 'mms'))
 						->set_width(30),
 					Field::make( 'html', 'hide_post_menu_default_desc' )
 						->set_width(70)
-						->set_html( '<i class="fa-regular fa-lightbulb-on"></i>Khi bật chế độ này, bạn sẽ không thể xem menu bài viết trong trang admin.' ),
+						->set_html( '<i class="fa-regular fa-lightbulb-on"></i> Khi bật chế độ này, bạn sẽ không thể xem menu bài viết trong trang admin.' ),
 
 					Field::make('checkbox', 'hide_comment_menu_default', __('Ẩn menu bình luận mặc định', 'mms'))
 						->set_width(30),
 					Field::make( 'html', 'hide_comment_menu_default_desc' )
 						->set_width(70)
-						->set_html( '<i class="fa-regular fa-lightbulb-on"></i>Khi bật chế độ này, bạn sẽ không thể xem menu bình luận trong trang admin.' ),
+						->set_html( '<i class="fa-regular fa-lightbulb-on"></i> Khi bật chế độ này, bạn sẽ không thể xem menu bình luận trong trang admin.' ),
 				])
 				->add_tab(__('SMTP', 'mms'), [
 					Field::make('checkbox', 'use_smtp', __('Sử dụng SMTP để gửi mail', 'mms')),
+					
 					Field::make('separator', 'smtp_separator_1', __('Thông tin máy chủ SMTP', 'mms')),
-					Field::make('text', 'smtp_host', __('Địa chỉ máy chủ', 'mms'))->set_default_value('smtp.gmail.com'),
-					Field::make('text', 'smtp_port', __('Cổng máy chủ', 'mms'))->set_default_value('587'),
-					Field::make('text', 'smtp_secure', __('Phương thức mã hóa', 'mms'))->set_default_value('TLS'),
+					Field::make('text', 'smtp_host', __('Địa chỉ máy chủ', 'mms'))
+						->set_width(33.33)
+						->set_default_value('smtp.gmail.com'),
+					Field::make('text', 'smtp_port', __('Cổng máy chủ', 'mms'))
+						->set_width(33.33)
+						->set_default_value('587'),
+					Field::make('text', 'smtp_secure', __('Phương thức mã hóa', 'mms'))
+						->set_width(33.33)
+						->set_default_value('TLS'),
+
 					Field::make('separator', 'smtp_separator_2', __('Thông tin email hệ thống', 'mms')),
-					Field::make('text', 'smtp_username', __('Địa chỉ email', 'mms'))->set_default_value('mooms.dev@gmail.com'),
-					Field::make('text', 'smtp_password', __('Mật khẩu', 'mms'))->set_default_value('utakxthdfibquxos'),
+					Field::make('text', 'smtp_username', __('Địa chỉ email', 'mms'))
+						->set_width(50)
+						->set_default_value('mooms.dev@gmail.com'),
+					Field::make('text', 'smtp_password', __('Mật khẩu', 'mms'))
+						->set_width(50)
+						->set_attribute('type', 'password')
+						->set_attribute('data-field', 'password-field')
+						->set_default_value('utakxthdfibquxos'),
 				]);
 
 			Container::make('theme_options', __('Tools', 'mms'))
@@ -578,20 +592,126 @@ class AdminSettings
 					->set_width(70)
 					->set_html( '<i class="fa-regular fa-lightbulb-on"></i> Nếu bạn muốn lazy load hình ảnh mỗi khi trang tải, hãy bật tính năng này. Chức năng này giúp trang web của bạn tải nhanh hơn' ),
 
-				// Compress HTML into a single line
-				Field::make( 'separator', 'title_compress_html', __( 'Compress HTML into a single line' ) ),
-				Field::make('checkbox', 'enable_compress_html', __('Enable compress HTML', 'mms'))
-					->set_width(30),
-				Field::make( 'html', 'compress_html_desc' )
-					->set_width(70)
-					->set_html( '<i class="fa-regular fa-lightbulb-on"></i> Với tính năng này, HTML sẽ được nén thành một dòng duy nhất, loại bỏ các ký tự và khoảng trắng không cần thiết để tăng tốc độ tải trang. <br> <b>Đừng bật nếu bạn đang sử dụng plugin tối ưu hóa với chức năng tương tự (xung đột)</b>' ),
-					
-				Field::make('checkbox', 'minify_inline_javascript', __('Minify Inline JavaScript', 'mms')),
 				Field::make('checkbox', 'remove_comments', __('Remove comments from HTML, JavaScript, and CSS', 'mms')),
 				Field::make('checkbox', 'remove_xhtml_closing_tags', __('Remove XHTML closing tags from empty elements in HTML5', 'mms')),
 				Field::make('checkbox', 'remove_relative_domain', __('Remove relative domain from internal URLs', 'mms')),
 				Field::make('checkbox', 'remove_protocols', __('Remove protocols (HTTP: and HTTPS:) from all URLs', 'mms')),
 				Field::make('checkbox', 'support_multi_byte_utf_8', __('Support multi-byte UTF-8 encoding (if you see strange characters)', 'mms')),
+				// Thêm các field tối ưu hóa mới
+				Field::make('checkbox', 'enable_advanced_resource_hints', __('Bật Advanced Resource Hints', 'mms'))
+					->set_width(30),
+				Field::make('html', 'enable_advanced_resource_hints_desc')
+					->set_width(70)
+					->set_html('<i class="fa-regular fa-lightbulb-on"></i> Bật tính năng thêm resource hint (preload, preconnect,...) giúp tăng tốc tải tài nguyên.'),
+
+				Field::make('checkbox', 'enable_optimize_images', __('Tối ưu hóa thuộc tính ảnh', 'mms'))
+					->set_width(30),
+				Field::make('html', 'enable_optimize_images_desc')
+					->set_width(70)
+					->set_html('<i class="fa-regular fa-lightbulb-on"></i> Tự động thêm lazy loading, alt, dimension cho ảnh.'),
+
+				Field::make('checkbox', 'enable_optimize_content_images', __('Tối ưu hóa ảnh trong nội dung', 'mms'))
+					->set_width(30),
+				Field::make('html', 'enable_optimize_content_images_desc')
+					->set_width(70)
+					->set_html('<i class="fa-regular fa-lightbulb-on"></i> Tự động lazy load ảnh trong nội dung bài viết.'),
+
+				Field::make('checkbox', 'enable_register_service_worker', __('Bật Service Worker cache', 'mms'))
+					->set_width(30),
+				Field::make('html', 'enable_register_service_worker_desc')
+					->set_width(70)
+					->set_html('<i class="fa-regular fa-lightbulb-on"></i> Đăng ký service worker để tăng tốc tải trang và cache tài nguyên.'),
+			])
+			// Security
+			->add_tab(__('Security', 'mms'), [
+				// Enhance website security
+				Field::make( 'separator', 'title_enhance_website_security', __( 'Enhance website security' ) ),
+				Field::make('checkbox', 'disable_rest_api', __('Disable REST API', 'mms'))
+					->set_width(30),
+				Field::make( 'html', 'disable_rest_api_desc' )
+					->set_width(70)
+					->set_html( '<i class="fa-regular fa-lightbulb-on"></i> REST API mặc định trong WordPress cho phép ứng dụng bên ngoài giao tiếp với WordPress để lấy dữ liệu hoặc đăng nội dung, bạn nên vô hiệu hóa nó cho mục đích bảo mật.' ),
+
+				Field::make('checkbox', 'disable_xml_rpc', __('Disable XML RPC', 'mms'))
+					->set_width(30),
+				Field::make( 'html', 'disable_xml_rpc_desc' )
+					->set_width(70)
+					->set_html( '<i class="fa-regular fa-lightbulb-on"></i> XML-RPC là giao thức cho phép quản lý website từ xa thông qua ứng dụng như WordPress App hoặc Jetpack.<br> <b>Khuyến cáo:</b> Nên tắt hoàn toàn nếu không dùng tới.' ),
+
+				Field::make('checkbox', 'disable_wp_embed', __('Disable Wp-Embed', 'mms'))
+					->set_width(30),	
+				Field::make( 'html', 'disable_wp_embed_desc' )
+					->set_width(70)
+					->set_html( '<i class="fa-regular fa-lightbulb-on"></i> WP-Embed cho phép nội dung của trang WordPress được nhúng vào trang web khác thông qua oEmbed.<br> <b>Khuyến cáo:</b> Nếu không dùng, nên tắt để giảm thiểu tải không cần thiết.' ),
+
+				Field::make('checkbox', 'disable_x_pingback', __('Disable X-Pingback', 'mms'))
+					->set_width(30),
+				Field::make( 'html', 'disable_x_pingback_desc' )
+					->set_width(70)
+					->set_html( '<i class="fa-regular fa-lightbulb-on"></i> X-Pingback là cơ chế thông báo giữa các blog (khi ai đó liên kết đến trang web).<br> <b>Khuyến cáo:</b> Nên tắt hoàn toàn nếu không dùng tới.' ),
+					
+				// Thêm các field bảo mật mới
+				Field::make('checkbox', 'enable_remove_wordpress_bloat', __('Loại bỏ bloat WordPress', 'mms'))
+					->set_width(30),
+				Field::make('html', 'enable_remove_wordpress_bloat_desc')
+					->set_width(70)
+					->set_html('<i class="fa-regular fa-lightbulb-on"></i> Loại bỏ các thành phần không cần thiết của WordPress để tăng bảo mật và hiệu suất.'),
+
+				Field::make('checkbox', 'enable_optimize_database_queries', __('Tối ưu hóa truy vấn database', 'mms'))
+					->set_width(30),
+				Field::make('html', 'enable_optimize_database_queries_desc')
+					->set_width(70)
+					->set_html('<i class="fa-regular fa-lightbulb-on"></i> Giới hạn post revision, tăng autosave interval, bật object cache.'),
+
+				Field::make('checkbox', 'enable_optimize_sql_queries', __('Log truy vấn SQL chậm', 'mms'))
+					->set_width(30),
+				Field::make('html', 'enable_optimize_sql_queries_desc')
+					->set_width(70)
+					->set_html('<i class="fa-regular fa-lightbulb-on"></i> Log các truy vấn SQL chậm để phát hiện truy vấn bất thường.'),
+
+				Field::make('checkbox', 'enable_optimize_memory_usage', __('Tối ưu hóa bộ nhớ', 'mms'))
+					->set_width(30),
+				Field::make('html', 'enable_optimize_memory_usage_desc')
+					->set_width(70)
+					->set_html('<i class="fa-regular fa-lightbulb-on"></i> Tăng memory limit, bật garbage collection.'),
+
+				Field::make('checkbox', 'enable_cleanup_memory', __('Dọn dẹp bộ nhớ cuối trang', 'mms'))
+					->set_width(30),
+				Field::make('html', 'enable_cleanup_memory_desc')
+					->set_width(70)
+					->set_html('<i class="fa-regular fa-lightbulb-on"></i> Dọn dẹp bộ nhớ cuối trang để giảm nguy cơ memory leak.'),
+
+				Field::make('checkbox', 'enable_set_cache_headers', __('Đặt cache header nâng cao', 'mms'))
+					->set_width(30),
+				Field::make('html', 'enable_set_cache_headers_desc')
+					->set_width(70)
+					->set_html('<i class="fa-regular fa-lightbulb-on"></i> Đặt cache header bảo vệ trang admin và user login.'),
+
+				Field::make('checkbox', 'enable_compression', __('Bật gzip nén dữ liệu', 'mms'))
+					->set_width(30),
+				Field::make('html', 'enable_compression_desc')
+					->set_width(70)
+					->set_html('<i class="fa-regular fa-lightbulb-on"></i> Bật gzip để bảo vệ dữ liệu truyền tải.'),
+
+				Field::make('checkbox', 'enable_performance_monitoring', __('Giám sát hiệu suất', 'mms'))
+					->set_width(30),
+				Field::make('html', 'enable_performance_monitoring_desc')
+					->set_width(70)
+					->set_html('<i class="fa-regular fa-lightbulb-on"></i> Giám sát hiệu suất, phát hiện bất thường.'),
+			]);
+			
+			Container::make('theme_options', __('Login Socials', 'mms'))
+			->set_page_parent($options)
+			->set_page_file(__('mms-login-socials', 'mms'))
+			->add_tab(__('Google', 'mms'), [
+				Field::make('checkbox', 'enable_login_google', __('Bật Login Google', 'mms')),
+				Field::make('text', 'google_client_id', __('Client ID', 'mms'))
+					->set_width(50),
+				Field::make('text', 'google_client_secret', __('Client Secret', 'mms'))
+					->set_width(50),
+				Field::make('text', 'google_redirect_uri', __('Redirect URI', 'mms'))
+					->set_attribute('readOnly', true)
+					->set_default_value(home_url('/wp-admin/admin-ajax.php?action=social_login_callback&driver=google')),
 			]);
 		});
 	}

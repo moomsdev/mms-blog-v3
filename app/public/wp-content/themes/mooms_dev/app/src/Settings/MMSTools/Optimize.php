@@ -2,10 +2,6 @@
 
 namespace App\Settings\MMSTools;
 
-use Carbon_Fields\Container;
-use Carbon_Fields\Field;
-use Intervention\Image\ImageManagerStatic as Image;
-
 class Optimize
 {
     protected $currentUser;
@@ -47,6 +43,22 @@ class Optimize
 		// The function of lazy loading images
 		if (get_option('_enable_lazy_loading_images') === 'yes') {
 			$this->enableLazyLoadingImages();
+		}
+
+		if (get_option('_enable_advanced_resource_hints') === 'yes') {
+			$this->addAdvancedResourceHints();
+		}
+
+		if (get_option('_enable_optimize_images') === 'yes') {
+			add_filter('wp_get_attachment_image_attributes', [$this, 'optimizeImages'], 10, 3);
+		}	
+
+		if (get_option('_enable_optimize_content_images') === 'yes') {
+			add_filter('the_content', [$this, 'optimizeContentImages'], 10, 1);
+		}
+
+		if (get_option('_enable_register_service_worker') === 'yes') {
+			$this->registerServiceWorker();
 		}
 	}
 
@@ -123,4 +135,74 @@ class Optimize
 			wp_enqueue_script( 'lazyload', get_stylesheet_directory_uri() . '/../resources/admin/lib/lazysizes.min.js', array('jquery'), '5.3.2', true);
 		}
 	}
+
+    /**
+     * Thêm resource hint (preload, preconnect, ...)
+     */
+    public function addAdvancedResourceHints()
+    {
+        add_action('wp_head', function () {
+            // Có thể thêm các resource hint tại đây
+        }, 1);
+    }
+
+    /**
+     * Tối ưu hóa thuộc tính ảnh (lazy loading, alt, dimension)
+     */
+    public function optimizeImages($attr, $attachment, $size)
+    {
+        $attr['loading'] = 'lazy';
+        $attr['decoding'] = 'async';
+        if (empty($attr['alt'])) {
+            $attr['alt'] = get_the_title($attachment->ID) ?: 'Image';
+        }
+        if (empty($attr['width']) || empty($attr['height'])) {
+            $image_meta = wp_get_attachment_metadata($attachment->ID);
+            if (!empty($image_meta['width']) && !empty($image_meta['height'])) {
+                $attr['width'] = $image_meta['width'];
+                $attr['height'] = $image_meta['height'];
+            }
+        }
+        return $attr;
+    }
+
+    /**
+     * Lazy load ảnh trong nội dung bài viết
+     */
+    public function optimizeContentImages($content)
+    {
+        $content = preg_replace('/<img((?![^>]*loading)[^>]*)>/', '<img$1 loading="lazy" decoding="async">', $content);
+        $content = preg_replace_callback('/<img([^>]+)>/', function ($matches) {
+            $img_tag = $matches[0];
+            if (strpos($img_tag, 'srcset') === false) {
+                return $img_tag;
+            }
+            return $img_tag;
+        }, $content);
+        return $content;
+    }
+
+    /**
+     * Đăng ký service worker cho cache
+     */
+    public function registerServiceWorker()
+    {
+        if (!is_admin() && !is_user_logged_in()) {
+            ?>
+            <script>
+                if ('serviceWorker' in navigator && !navigator.serviceWorker.controller) {
+                    window.addEventListener('load', function () {
+                        navigator.serviceWorker.register('<?= get_template_directory_uri(); ?>/dist/sw.js', {
+                            scope: '/'
+                        }).then(function (registration) {
+                            console.log('SW registered:', registration.scope);
+                        }).catch(function (error) {
+                            console.log('SW registration failed:', error);
+                        });
+                    });
+                }
+            </script>
+            <?php
+        }
+    }
 } 
