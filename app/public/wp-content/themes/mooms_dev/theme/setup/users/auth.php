@@ -4,6 +4,14 @@ use Overtrue\Socialite\SocialiteManager;
 
 add_action('wp_ajax_nopriv_user_login', 'mm_user_login');
 add_action('wp_ajax_user_login', 'mm_user_login');
+
+define('SOCIAL_DRIVER', [
+    'google'   => [
+        'client_id'     => get_option('google_client_id'),
+        'client_secret' => get_option('google_client_secret'),
+        'redirect'      => get_option('google_redirect_uri'),
+    ],
+]);
 function mm_user_login()
 {
     if (empty($_POST)) {
@@ -105,78 +113,24 @@ function mm_user_reset_password()
     wp_send_json_success(true);
 }
 
-// add_action('wp_ajax_nopriv_google_login', 'googleLogin');
-// add_action('wp_ajax_google_login', 'googleLogin');
-// function googleLogin() {
-//     if (is_user_logged_in()) {
-//         socialCallbackRedirectUrl();
-//         die();
-//     }
-//
-//     $socialite = new SocialiteManager(SOCIAL_DRIVER);
-//     $response  = $socialite->driver('google')->redirect();
-//     echo $response;
-// }
-//
-// add_action('wp_ajax_nopriv_facebook_login', 'facebookLogin');
-// add_action('wp_ajax_facebook_login', 'facebookLogin');
-// function facebookLogin() {
-//     if (is_user_logged_in()) {
-//         socialCallbackRedirectUrl();
-//         die();
-//     }
-//
-//     $socialite = new SocialiteManager(SOCIAL_DRIVER);
-//     $response  = $socialite->driver('facebook')->redirect();
-//     echo $response;
-// }
-
-add_action('wp_ajax_nopriv_social_login_callback', 'facebookLoginCallback');
-add_action('wp_ajax_social_login_callback', 'facebookLoginCallback');
-function facebookLoginCallback()
-{
+add_action('wp_ajax_nopriv_google_login', 'googleLogin');
+add_action('wp_ajax_google_login', 'googleLogin');
+function googleLogin() {
     if (is_user_logged_in()) {
         socialCallbackRedirectUrl();
         die();
     }
 
-    try {
-        $socialite = new SocialiteManager(SOCIAL_DRIVER);
+    $redirect = !empty($_GET['redirect_to']) ? $_GET['redirect_to'] : null;
+    $socialite = new SocialiteManager(SOCIAL_DRIVER);
 
-        $fbUser = $socialite->driver($_GET['driver'])->user();
-
-        $args = [
-            'id'       => $fbUser->getId(),           // 1472352
-            'nickname' => $fbUser->getNickname(),     // "overtrue"
-            'username' => $fbUser->getName(),         // "overtrue"
-            'name'     => $fbUser->getName(),         // "安正超"
-            'email'    => $fbUser->getEmail(),        // "anzhengchao@gmail.com"
-            'provider' => $fbUser->getProviderName(), // GitHub
-        ];
-
-        $user = get_user_by_email($args['email']);
-        if (!$user) {
-            $userId = wp_insert_user([
-                'user_login'   => $args['email'],
-                'user_email'   => $args['email'],
-                'display_name' => $args['username'],
-            ]);
-
-            if (!is_wp_error($userId)) {
-                updateUserMeta($userId, 'billing_first_name', $args['name']);
-                updateUserMeta($userId, 'billing_email', $args['email']);
-
-                $user = get_user_by_email($args['email']);
-            }
-        }
-
-        wp_set_current_user($user->ID, $user->user_login);
-        wp_set_auth_cookie($user->ID);
-        do_action('wp_login', $user->user_login, $user);
-        socialCallbackRedirectUrl();
-    } catch (\Exception $ex) {
-        dump($ex);
+    // Nếu có redirect_to thì override redirect URI
+    if ($redirect) {
+        $socialite->driver('google')->redirectUrl($redirect);
     }
+
+    $response  = $socialite->driver('google')->redirect();
+    echo $response;
 }
 
 function socialCallbackRedirectUrl()
@@ -192,3 +146,54 @@ function socialCallbackRedirectUrl()
                 redirect: "/"
             });window.close();</script>';
 }
+
+add_action('wp_ajax_nopriv_google_admin_callback', 'googleAdminCallback');
+add_action('wp_ajax_google_admin_callback', 'googleAdminCallback');
+/**
+ * Xử lý callback đăng nhập/đăng ký admin bằng Google
+ */
+function googleAdminCallback() {
+    $socialite = new SocialiteManager(SOCIAL_DRIVER);
+    $user = $socialite->driver('google')->user();
+
+    if (!$user || empty($user->getEmail())) {
+        echo '<script>alert("Không lấy được thông tin từ Google!");window.close();</script>';
+        exit;
+    }
+
+    // Kiểm tra email có phải admin không
+    $admin_user = get_user_by('email', $user->getEmail());
+    if ($admin_user && in_array('administrator', $admin_user->roles)) {
+        // Đăng nhập user admin
+        wp_set_current_user($admin_user->ID);
+        wp_set_auth_cookie($admin_user->ID);
+
+        echo '<script>opener.socialLoginReturn({
+            success: true,
+            notification: {
+                title: "' . __('Xin chào, ', 'mms') . $admin_user->user_email . '", 
+                message: "' . __('Chúc mừng bạn đã đăng nhập thành công với quyền admin', 'mms') . '"
+            },
+            redirect: "/wp-admin/"
+        });window.close();</script>';
+        exit;
+    } else {
+        echo '<script>alert("Tài khoản Google này không có quyền admin!");window.close();</script>';
+        exit;
+    }
+}
+
+/**
+ * Thêm nút đăng nhập Google vào trang login
+ */
+add_action('login_form', function () {
+    // Lấy URL để bắt đầu quá trình đăng nhập Google
+    $google_login_url = admin_url('admin-ajax.php?action=google_login&redirect_to=' . urlencode(admin_url('admin-ajax.php?action=google_admin_callback')));
+    ?>
+    <div style="margin-bottom: 16px; text-align: center;">
+        <a href="<?php echo esc_url($google_login_url); ?>" class="button button-primary" style="background: #db4437; border-color: #db4437; color: #fff; width: 100%;">
+            Đăng nhập bằng Google (Admin)
+        </a>
+    </div>
+    <?php
+});
