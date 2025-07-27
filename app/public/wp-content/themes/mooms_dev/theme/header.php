@@ -60,46 +60,48 @@
 	<div class="wrapper_mms" id="swup">
 		<header id="header">
 			<div class="container">
-				<!-- slogan -->
-				<div class="slogan">
-					<?php
-					$slogan = getOption('slogan');
-					echo apply_filters('the_content', $slogan);
-					?>
-				</div>
+                <div class="header-inner">
+                    <!-- slogan -->
+                    <div class="slogan">
+                        <?php
+                        $slogan = getOption('slogan');
+                        echo apply_filters('the_content', $slogan);
+                        ?>
+                    </div>
 
-				<div class="head-menu d-flex align-items-center justify-content-between">
-					<!-- logo -->
-					<div class="logo-menu d-flex align-items-center">
-						<span class="circle"></span>
-						<?php
-						echo '<nav class="nav-menu">	<button id="btn-hamburger">
-								<div class="line-1"></div>
-								<div class="line-2"></div>
-								<div class="line-3"></div>
-							</button></button>';
-						
-							wp_nav_menu([
-								'theme_location' => 'main-menu',
-								'menu_class'     => 'main-menu',
-								'container'      => false,
-								'walker'         => new MMS_Menu_Walker(),
-							]);
-						echo '</nav>';
-						?>
-					</div>
+                    <div class="head-menu d-flex align-items-center justify-content-between">
+                        <!-- logo -->
+                        <div class="logo-menu d-flex align-items-center">
+                            <span class="circle"></span>
+                            <?php
+                            echo '<nav class="nav-menu">	<button id="btn-hamburger">
+                                    <div class="line-1"></div>
+                                    <div class="line-2"></div>
+                                    <div class="line-3"></div>
+                                </button></button>';
+                            
+                                wp_nav_menu([
+                                    'theme_location' => 'main-menu',
+                                    'menu_class'     => 'main-menu',
+                                    'container'      => false,
+                                    'walker'         => new MMS_Menu_Walker(),
+                                ]);
+                            echo '</nav>';
+                            ?>
+                        </div>
 
-					<div class="language-search d-flex align-items-center gap-4">
-						<!-- search -->
-						<div class="search-icon">
-							<button class="search-icon__btn">
-								<span class="iconify" data-icon="lucide:search-code"></span>
-							</button>
-						</div>
-						<!-- multi language -->
-						<?php theLanguageSwitcher(); ?>
-					</div>
-				</div>
-				<!-- end head-menu -->
+                        <div class="language-search d-flex align-items-center gap-4">
+                            <!-- search -->
+                            <div class="search-icon">
+                                <button class="search-icon__btn">
+                                    <span class="iconify" data-icon="lucide:search-code"></span>
+                                </button>
+                            </div>
+                            <!-- multi language -->
+                            <?php theLanguageSwitcher(); ?>
+                        </div>
+                    </div>
+                    <!-- end head-menu -->
+                </div>
 			</div>
 		</header>

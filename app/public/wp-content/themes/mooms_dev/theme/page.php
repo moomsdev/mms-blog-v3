@@ -15,6 +15,13 @@
 	endif;
 ?>
 
-<div class="page">
-	<?php the_content(); ?>
-</div>
+    <!-- Trang chủ -->
+    <?php
+	if (is_front_page()):
+    ?>
+        <div class="page-content">
+            <?php the_content(); ?>
+        </div>
+    <?php
+	endif;
+	?>

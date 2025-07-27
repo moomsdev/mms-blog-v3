@@ -436,3 +436,6 @@ function mms_check_spam_form_cf7_vaild($posted_data)
 
 // Enable excerpt for pages
 add_post_type_support('page', 'excerpt');
+
+// Disable Gutenberg for all post types
+// add_filter('use_block_editor_for_post', '__return_false');

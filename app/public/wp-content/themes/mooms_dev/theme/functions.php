@@ -277,3 +277,4 @@ add_action('wp_footer', 'custom_ajax_script');
 // =============================================================================
 
 new \App\PostTypes\blog();
+new \App\PostTypes\service();
