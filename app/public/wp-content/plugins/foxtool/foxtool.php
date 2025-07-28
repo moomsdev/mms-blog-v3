@@ -3,7 +3,7 @@
 * Plugin name: Foxtool All-in-One: Contact chat button, Custom login, Media optimize images
 * Plugin URL: https://foxtheme.net
 * Description: Summarize the essential functions for managing a WordPress website
-* Version: 2.5.1
+* Version: 2.5.2
 * Author: Fox Theme
 * Text Domain: foxtool
 * Domain Path: /lang
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
 // Them ver
-define( 'FOXTOOL_VERSION', '2.5.1');
+define( 'FOXTOOL_VERSION', '2.5.2');
 // khai bao duong dan
 define('FOXTOOL_URL', plugin_dir_url( __FILE__ ));
 define('FOXTOOL_DIR', plugin_dir_path( __FILE__ ));

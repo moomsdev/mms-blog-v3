@@ -4,9 +4,9 @@ Donate link: https://paypal.me/ihoan
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: all-in-one, tool, functions, mail, code
-Tested up to: 6.5
-Requires PHP: 5.8
-Stable tag: 2.5.1
+Tested up to: 6.8.2
+Requires PHP: 7.2
+Stable tag: 2.5.2
 
 Summarize the essential functions for managing a WordPress website
 
